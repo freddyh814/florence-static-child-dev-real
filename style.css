@@ -699,7 +699,8 @@ button[data-pack-quote],
   flex-grow: 1;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
+  /* Align everything to start (left) */
   align-items: flex-end;
   gap: 16px;
   padding-bottom: 0px;
@@ -712,8 +713,13 @@ button[data-pack-quote],
   align-items: flex-start;
   /* Align text to start of nav */
   justify-content: flex-end;
-  margin: 0 auto;
-  /* Center the group in the available space */
+
+  /* Positioning: "Scoot left" - approx 2 inches visual closer, user said "bit further left" */
+  margin: 0;
+  margin-left: 30px;
+  /* Reduced from 60px to move further left */
+  margin-right: auto;
+  /* Pushes the next sibling (CTA) to the far right */
 }
 
 /* Right Actions Group */
@@ -756,14 +762,14 @@ button[data-pack-quote],
 .brand-text-wrapper {
   display: flex;
   align-items: flex-end;
-  /* Align language toggle with text bottom/center */
   gap: 24px;
-  /* Align left edge with Nav (which is naturally left aligned in col) */
   padding-left: 0;
+  margin: 0;
+  /* Reset */
+  margin-bottom: 4px;
   margin-right: auto;
-  /* Try to keep it somewhat balanced if using space-between, but with center above, this might fight. */
-  margin-left: auto;
-  /* Force centering */
+  margin-left: -35px;
+  /* Shift text further left as requested */
 }
 
 .language-toggle {
@@ -772,6 +778,9 @@ button[data-pack-quote],
   border-radius: 20px;
   padding: 2px;
   margin-bottom: 4px;
+  position: relative;
+  top: -6px;
+  /* Move slider up 6px using relative positioning */
   /* Visual alignment */
 }
 
@@ -848,14 +857,18 @@ button[data-pack-quote],
 
 .mega-nav {
   max-width: 1200px;
-  /* Removed padding to ensure flush alignment with text */
+  /* Removed padding to ensure flush alignment with text, then shifted left 30px independently */
   margin: 0;
+  margin-left: -40px;
+  /* Shift only nav buttons left as requested */
   padding: 0;
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
   /* Ensure start alignment */
   gap: 32px;
+  transform: translateY(5px);
+  /* Move buttons down 5px as requested without moving text */
 }
 
 /* Mega Nav List */
