@@ -14,8 +14,6 @@
 <body <?php body_class(); ?>>
 
     <?php wp_body_open(); ?>
-    <div style="background-color: red; color: white; text-align: center; padding: 10px; font-weight: bold; width: 100%;">test</div>
-
     <?php
     $brand_logo = get_theme_file_uri('assets/images/logo-wordmark.svg');
     if (has_custom_logo()) {
@@ -92,8 +90,8 @@
 
             <!-- Right Column: Info + Nav -->
             <div class="header-col-right">
-                <!-- Top Bar: Branding Text + Language Toggle + Mobile Toggle -->
-                <div class="sleek-header__top-bar">
+                <!-- Center Group: Branding Text + Navigation List -->
+                <div class="nav-center-group">
                     <div class="brand-text-wrapper">
                         <div class="brand-text">
                             <span class="brand-line-1">Nearshore surgical textiles</span>
@@ -106,41 +104,51 @@
                         </div>
                     </div>
 
-                    <button class="sleek-header__toggle" type="button" aria-expanded="false"
-                        aria-controls="mega-navigation" data-slim-toggle>
-                        <span></span><span></span><span></span>
-                    </button>
+                    <nav class="mega-nav" id="mega-navigation" data-slim-nav>
+                        <ul class="mega-nav__list">
+                            <?php foreach ($nav_groups as $group): ?>
+                                <li class="mega-nav__item">
+                                    <button class="mega-nav__toggle" type="button" data-mega-toggle>
+                                        <span class="mega-nav__title"><?php echo esc_html($group['title']); ?></span>
+                                    </button>
+                                    <div class="mega-nav__panel" data-mega-panel>
+                                        <div class="mega-nav__panel-inner">
+                                            <ul>
+                                                <?php foreach ($group['links'] as $link): ?>
+                                                    <li><a
+                                                            href="<?php echo esc_url($link['url']); ?>"><?php echo esc_html($link['label']); ?></a>
+                                                    </li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <!-- Mobile CTA (Visible on Mobile only via CSS) -->
+                        <div class="mega-nav__cta mobile-cta">
+                            <a class="btn btn-primary"
+                                href="<?php echo esc_url(home_url('/request-samples/')); ?>"><?php esc_html_e('Request Samples', 'florence-static'); ?></a>
+                            <a class="btn btn-secondary"
+                                href="<?php echo esc_url(home_url('/request-quote/')); ?>"><?php esc_html_e('Contact', 'florence-static'); ?></a>
+                        </div>
+                    </nav>
                 </div>
 
-                <!-- Bottom Bar: Navigation -->
-                <nav class="mega-nav" id="mega-navigation" data-slim-nav>
-                    <ul class="mega-nav__list">
-                        <?php foreach ($nav_groups as $group): ?>
-                            <li class="mega-nav__item">
-                                <button class="mega-nav__toggle" type="button" data-mega-toggle>
-                                    <span class="mega-nav__title"><?php echo esc_html($group['title']); ?></span>
-                                </button>
-                                <div class="mega-nav__panel" data-mega-panel>
-                                    <div class="mega-nav__panel-inner">
-                                        <ul>
-                                            <?php foreach ($group['links'] as $link): ?>
-                                                <li><a
-                                                        href="<?php echo esc_url($link['url']); ?>"><?php echo esc_html($link['label']); ?></a>
-                                                </li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                    <div class="mega-nav__cta">
+                <!-- Right Actions: Desktop CTA + Mobile Toggle -->
+                <div class="header-right-actions">
+                    <div class="mega-nav__cta desktop-cta">
                         <a class="btn btn-primary"
                             href="<?php echo esc_url(home_url('/request-samples/')); ?>"><?php esc_html_e('Request Samples', 'florence-static'); ?></a>
                         <a class="btn btn-secondary"
                             href="<?php echo esc_url(home_url('/request-quote/')); ?>"><?php esc_html_e('Contact', 'florence-static'); ?></a>
                     </div>
-                </nav>
+
+                    <button class="sleek-header__toggle" type="button" aria-expanded="false"
+                        aria-controls="mega-navigation" data-slim-toggle>
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
             </div>
         </div>
     </header>

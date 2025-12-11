@@ -691,19 +691,53 @@ button[data-pack-quote],
   display: block;
   margin: 0 !important;
   /* Reduced from 144px to 60px as requested (approx 70% reduction in visual weight/height range) */
-  height: 60px !important;
+  height: 120px !important;
 }
 
 /* Right Column: Info + Nav */
 .header-col-right {
   flex-grow: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
   gap: 16px;
-  /* Gap between Text row and Nav row */
-  padding-bottom: 5px;
-  /* Fine tune alignment with logo bottom */
+  padding-bottom: 0px;
+}
+
+/* Center Group: Text + Nav */
+.nav-center-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* Align text to start of nav */
+  justify-content: flex-end;
+  margin: 0 auto;
+  /* Center the group in the available space */
+}
+
+/* Right Actions Group */
+.header-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Cleanup old Top Bar styles if redundant, but keep just in case */
+.sleek-header__top-bar {
+  display: none;
+  /* Removed from HTML, safe to hide or ignore */
+}
+
+.brand-text-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  padding-left: 0;
+  margin: 0;
+  /* Reset margins */
+  margin-bottom: 4px;
+  /* Slight gap above buttons */
 }
 
 /* Top Bar of Right Column */
@@ -713,6 +747,10 @@ button[data-pack-quote],
   justify-content: space-between;
   /* Pushes mobile toggle to end if needed */
   width: 100%;
+  justify-content: center;
+  /* Center the text wrapper */
+  position: relative;
+  /* For potential absolute positioning if needed, but flex center is safer first */
 }
 
 .brand-text-wrapper {
@@ -722,6 +760,10 @@ button[data-pack-quote],
   gap: 24px;
   /* Align left edge with Nav (which is naturally left aligned in col) */
   padding-left: 0;
+  margin-right: auto;
+  /* Try to keep it somewhat balanced if using space-between, but with center above, this might fight. */
+  margin-left: auto;
+  /* Force centering */
 }
 
 .language-toggle {
@@ -806,22 +848,61 @@ button[data-pack-quote],
 
 .mega-nav {
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 clamp(16px, 4vw, 32px) 24px;
-  /* Reduced top padding */
+  /* Removed padding to ensure flush alignment with text */
+  margin: 0;
+  padding: 0;
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
+  justify-content: flex-start;
+  /* Ensure start alignment */
   gap: 32px;
 }
 
+/* Mega Nav List */
 .mega-nav__list {
   display: flex;
-  gap: 18px;
+  gap: 8px;
   list-style: none;
   margin: 0;
   padding: 0;
   flex-wrap: wrap;
+}
+
+/* CTA Visibility Control */
+.mobile-cta {
+  display: none !important;
+}
+
+.desktop-cta {
+  display: flex !important;
+  flex-direction: column;
+  /* Or row if preferred, but user had stack */
+  gap: 10px;
+  min-width: 180px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 1024px) {
+  .mobile-cta {
+    display: flex !important;
+  }
+
+  .desktop-cta {
+    display: none !important;
+  }
+
+  .sleek-header__toggle {
+    display: block;
+    margin-left: auto;
+  }
+
+  .nav-center-group {
+    margin: 0;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  /* ... ensure text wrapper is handled or hidden on mobile if needed ... */
 }
 
 .mega-nav__item {
@@ -831,7 +912,7 @@ button[data-pack-quote],
 .mega-nav__toggle {
   border: 1px solid rgba(15, 23, 42, 0.1);
   border-radius: 18px;
-  padding: 10px 18px;
+  padding: 8px 14px;
   background: #f6f8ff;
   cursor: pointer;
   font-weight: 600;
@@ -903,9 +984,7 @@ button[data-pack-quote],
 }
 
 /* Ensure desktop padding matches text alignment */
-.mega-nav__item:first-child .mega-nav__toggle {
-  padding-left: 0 !important;
-}
+
 
 @media (max-width: 1024px) {
   .sleek-header__toggle {
