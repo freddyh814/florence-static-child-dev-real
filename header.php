@@ -14,7 +14,7 @@
 <body <?php body_class(); ?>>
 
     <?php wp_body_open(); ?>
-    <div style="background-color: #333; color: white; text-align: center; padding: 10px; font-weight: bold; width: 100%;">test</div>
+    <div style="background-color: red; color: white; text-align: center; padding: 10px; font-weight: bold; width: 100%;">test</div>
 
     <?php
     $brand_logo = get_theme_file_uri('assets/images/logo-wordmark.svg');
