@@ -9,6 +9,14 @@
     <meta charset="<?php bloginfo('charset'); ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <?php wp_head(); ?>
+    <style>
+        html,
+        body.home,
+        body {
+            background-color: #eaeffa !important;
+            background-image: none !important;
+        }
+    </style>
 </head>
 
 <body <?php body_class(); ?>>

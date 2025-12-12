@@ -11,13 +11,7 @@ Version: 1.0.5
 /* Variables */
 :root {
   /* Child theme overrides live here */
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: clamp(24px, 6vw, 48px) clamp(24px, 6vw, 48px) clamp(18px, 4vw, 32px);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: clamp(20px, 4vw, 36px);
+  /* Removed restrictive layout properties to allow full-width design */
 }
 
 .footer-links-stack>div {
@@ -60,13 +54,8 @@ Version: 1.0.5
 
 .front-hero::after {
   content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(circle at var(--spotlight-x) var(--spotlight-y), rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08) 32%, rgba(19, 43, 80, 0) 65%);
-  opacity: var(--spotlight-opacity);
-  transition: opacity 0.25s ease;
-  z-index: 0;
+  display: none !important;
+  /* Remove spotlight gradient as requested */
 }
 
 .front-hero__grid {
@@ -75,12 +64,123 @@ Version: 1.0.5
   align-items: center;
 }
 
-body {
-  background: linear-gradient(135deg, #0b1b39 0%, #132b50 55%, #23375e 100%) !important;
+/* === New Layout Structure === */
+html,
+body,
+html body,
+body.home {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: #eaeffa !important;
+  /* Slightly darker blue as requested */
+  background-image: none !important;
+  /* Kill parent gradient */
+  background: #eaeffa !important;
 }
 
-body.home {
-  background: linear-gradient(135deg, #0b1b39 0%, #132b50 55%, #23375e 100%);
+/* Ensure no other wrapper overrides it */
+.site,
+.site-content,
+.florence-page,
+#page {
+  background: transparent !important;
+  background-image: none !important;
+}
+
+/* --- New Layout Structure --- */
+.sleek-header {
+  width: 100%;
+  background: #ffffff;
+  /* Assuming white header background */
+}
+
+.sleek-header__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  /* Mobile safe padding */
+  width: 100%;
+}
+
+/* Generic Content Container - Applying to likely wrappers */
+/* Generic Content Container - Applying to likely wrappers */
+.site-content,
+main,
+.site,
+.florence-page,
+.entry-content,
+.wrapper {
+  width: 100%;
+  max-width: 100%;
+  /* Allow full width for sections with backgrounds */
+  margin: 0;
+  padding: 0;
+}
+
+/* Force full width on sections */
+.front-hero,
+.florence-hero,
+.page-section,
+.front-solutions,
+.products-hero {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Inner Containers for Centering */
+.container,
+.front-hero__grid,
+.page-section__container,
+.florence-container,
+/* Guessed common class names */
+.build-pack__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  /* Removed vertical padding from inner containers */
+  width: 100%;
+}
+
+/* Force tight vertical spacing */
+section,
+.page-section,
+.front-hero,
+.products-hero,
+.front-solutions,
+.front-insights,
+.front-map,
+.front-gallery,
+.front-product-grid,
+.front-cta,
+.front-pillars,
+.florence-hero {
+  padding-top: 25px !important;
+  padding-bottom: 25px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Explicit Header Separation */
+.site-header,
+.sleek-header,
+header {
+  margin-bottom: 0 !important;
+}
+
+main {
+  padding-top: 25px !important;
+  /* Gap between header and first section */
+}
+
+/* Clean up hero internal spacing if needed */
+.front-hero__content,
+.hero-content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 body.home .front-hero .section-title,
@@ -94,6 +194,17 @@ body.home .front-hero .subhead {
   color: rgba(248, 251, 255, 0.88);
 }
 
+/* Fix Search Section Background */
+body.home .smart-search,
+.smart-search {
+  display: none !important;
+}
+
+/* Fix Hero Pattern Bleed */
+.front-hero__pattern {
+  display: none !important;
+}
+
 body.home .front-solutions__cta a {
   color: #9dc6ff;
 }
@@ -102,7 +213,126 @@ body.home .front-solutions__cta a:hover {
   color: #d8ecff;
 }
 
-/* === Slim header overrides === */
+/* Ghost Buster - Targeted fix for persistent container styles on Solutions wall */
+html body .ghost-buster,
+html body .ghost-buster::before,
+html body .ghost-buster::after {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Fix Hero Confidence Cards - High Specificity Override */
+html body.home .front-confidence__strip,
+body.home.florence-static .front-confidence__strip,
+body.home .front-confidence .front-confidence__strip,
+.front-confidence__strip {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 10px;
+  border-radius: 20px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  outline: none !important;
+}
+
+/* Nuke pseudos just in case */
+body.home .front-confidence__strip::before,
+body.home .front-confidence__strip::after {
+  display: none !important;
+
+  /* Visual spacing using padding */
+  margin-top: 0 !important;
+  /* No layout gap */
+  border-top: none !important;
+  box-shadow: none !important;
+}
+
+/* Force tighter hero bottom */
+body.home .front-hero {
+  padding-bottom: 0 !important;
+  /* Remove bottom padding */
+  margin-bottom: 0 !important;
+  /* Remove bottom margin */
+  background: transparent !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.front-confidence__items {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  flex: 1;
+  /* Allow items to take available space */
+}
+
+.front-confidence__item {
+  background: #ffffff !important;
+  /* Force solid white background */
+  border-radius: 16px;
+  padding: 24px 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  height: auto;
+  /* Allow auto height but stretch due to grid */
+}
+
+.front-confidence__brand {
+  display: flex;
+  /* Make it a flex container */
+  align-items: center;
+  /* Vertically center the logo */
+  justify-content: center;
+  flex: 0 0 200px;
+  /* Fixed width for brand card */
+  background: #ffffff;
+  /* Match other cards */
+  border-radius: 16px;
+  padding: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  /* Match border */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  /* Match shadow */
+}
+
+.front-confidence__brand img {
+  width: auto;
+  max-width: 140px;
+  /* Limit logo width */
+  height: auto;
+  max-height: 80px;
+  filter: none !important;
+  /* Remove drop shadow from logo image itself */
+  transform: none !important;
+}
+
+.front-confidence__value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a !important;
+  text-shadow: none !important;
+  /* Remove text shadow */
+}
+
 .slim-header {
   position: sticky;
   top: 0;
@@ -317,7 +547,7 @@ body.slim-nav-open {
 
 /* === Global light palette overrides === */
 :root {
-  --fl-bg: #f6f8ff;
+  --fl-bg: #eaeffa;
   --fl-panel: #ffffff;
   --fl-text: #0f172a;
   --fl-muted: #475569;
@@ -462,12 +692,40 @@ table td {
   display: none !important;
 }
 
+/* Dark Card Styling for Build Pack Section */
 .build-pack {
-  background: var(--fl-bg) !important;
-  color: var(--fl-text) !important;
-  padding-top: 1rem !important;
-  padding-bottom: 1rem !important;
-  margin-bottom: 0 !important;
+  background: #334155 !important;
+  /* Dark Grey (Slate 700) as requested */
+  color: #ffffff !important;
+  padding: 40px !important;
+  margin: 40px auto !important;
+  border-radius: 24px;
+  max-width: 1200px;
+  /* Constrain width to look like a card */
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.15);
+}
+
+.build-pack .section-title,
+.build-pack .section-lead,
+.build-pack__eyebrow,
+.build-pack h3,
+.build-pack p {
+  color: #ffffff !important;
+}
+
+/* Ensure inner cards remain white with dark text */
+.build-pack__component {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.build-pack__component h3,
+.build-pack__component p,
+.build-pack__component small,
+.build-pack__component span {
+  color: #0f172a !important;
 }
 
 .build-pack__grid {
@@ -480,7 +738,8 @@ table td {
   background: var(--fl-panel) !important;
   border: 1px solid var(--fl-line) !important;
   border-radius: 24px;
-  padding: 32px;
+  padding: 24px;
+  /* Reduced from 32px to save space */
   box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
   color: var(--fl-text) !important;
   background: transparent !important;
@@ -488,15 +747,87 @@ table td {
   box-shadow: none !important;
 }
 
+/* Panel Headers and Text - Force White */
+/* Panel Headers and Text - Force White */
+/* Panel Headers and Text - Force White */
 .build-pack__panel h3 {
-  color: var(--fl-text) !important;
+  color: #ffffff !important;
+  margin-top: 0 !important;
+  margin-bottom: 8px !important;
 }
 
 .build-pack__panel p,
-.build-pack__panel small,
-.build-pack__panel td,
-.build-pack__panel th {
-  color: var(--fl-muted) !important;
+.build-pack__panel small {
+  color: #ffffff !important;
+}
+
+/* Fix Table Text Colors (Keep dark inside white table) */
+.build-pack__drop table {
+  color: #0f172a !important;
+}
+
+.build-pack__drop th,
+.build-pack__drop td {
+  color: #0f172a !important;
+}
+
+/* Remove Blue Dotted Line from Dropzone & Make Transparent */
+.build-pack__drop {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  /* Transparent as requested */
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Ensure table itself is the "card" */
+/* Fix Table Rounded Corners - Robust Approach */
+/* Fix Table Rounded Corners - Wrapper Approach (Robust) */
+.build-pack__table-wrapper {
+  background: #ffffff !important;
+  border-radius: 12px;
+  overflow: hidden !important;
+  /* This now safely clips the table */
+  border: 1px solid var(--fl-line);
+  margin-bottom: 0;
+}
+
+.build-pack__drop table {
+  background: transparent !important;
+  border-radius: 0 !important;
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+  border: none !important;
+  width: 100%;
+  border-collapse: collapse !important;
+  /* Back to collapse for cleaner inner borders */
+}
+
+/* Ensure cells are transparent or white - doesn't matter as much now, but cleaner transparent */
+.build-pack__drop th,
+.build-pack__drop td {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid var(--fl-line) !important;
+  border-right: 1px solid var(--fl-line) !important;
+}
+
+/* Remove Outer Borders of cells since wrapper has border */
+.build-pack__drop table th:last-child,
+.build-pack__drop table td:last-child {
+  border-right: none !important;
+}
+
+.build-pack__drop table tr:last-child td {
+  border-bottom: none !important;
+}
+
+/* Totals Text */
+.build-pack__totals p,
+.build-pack__totals strong {
+  color: #ffffff !important;
+}
 }
 
 .build-pack__components {
@@ -583,18 +914,50 @@ table td {
   color: #2563eb !important;
 }
 
+/* Fix Search Section Background */
+.smart-search {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Map Fixes */
+.footer-column--map {
+  position: relative;
+  z-index: 5;
+}
+
+.footer-map__embed {
+  aspect-ratio: 1 / 1;
+  min-height: 300px;
+  /* Increased slightly */
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(9, 16, 40, 0.8);
+  position: relative;
+  width: 100%;
+}
+
 .footer-map__canvas {
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid rgba(15, 23, 42, 0.1);
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  z-index: 10;
 }
 
 .front-hero__copy {
-  background: rgba(255, 255, 255, 0.92);
+  background: #ffffff;
+  /* Solid white, no transparency */
   padding: 32px;
   border-radius: 24px;
   color: #0f172a !important;
-  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.18);
+  box-shadow: none !important;
+  /* Remove "gradient" shadow as requested */
 }
 
 .front-hero__copy h1,

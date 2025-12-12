@@ -25,23 +25,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // 2. Add Clear Button (only if not already added)
-    const table = summaryBody.closest('table');
-    if (table && !document.querySelector('.build-pack__clear')) {
-      const clearBtn = document.createElement('button');
-      clearBtn.type = 'button';
-      clearBtn.className = 'btn btn-secondary build-pack__clear';
-      clearBtn.textContent = 'Clear Pack';
-      clearBtn.style.marginTop = '16px';
-      clearBtn.style.fontSize = '12px';
-      clearBtn.style.padding = '8px 16px';
-      table.parentNode.insertBefore(clearBtn, table.nextSibling);
-
+    // 2. Clear Button Logic
+    const clearBtn = document.querySelector('.build-pack__clear');
+    if (clearBtn) {
       clearBtn.addEventListener('click', () => {
         selections.clear();
         refreshSummary();
       });
     }
+
 
     // 3. Remove "A partner built for accountability" section
     const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
