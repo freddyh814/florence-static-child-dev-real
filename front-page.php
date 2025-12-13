@@ -55,6 +55,7 @@ $solution_cards = [
             'COFEPRIS sanitary license (active)',
             'FDA importer ID #1748216',
         ],
+        'badge' => 'AAMI PB70',
     ],
     [
         'title' => 'Masks and respiratory protection',
@@ -66,6 +67,7 @@ $solution_cards = [
             'COFEPRIS airway PPE registration',
             'FDA importer ID #1748216',
         ],
+        'badge' => 'ASTM F2100',
     ],
     [
         'title' => 'Procedure and drape packs',
@@ -77,6 +79,7 @@ $solution_cards = [
             'COFEPRIS kit assembly approval',
             'FDA importer ID #1748216',
         ],
+        'badge' => 'Start-to-finish custom',
     ],
     [
         'title' => 'PPE and patient apparel',
@@ -88,6 +91,7 @@ $solution_cards = [
             'COFEPRIS apparel listing',
             'FDA importer ID #1748216',
         ],
+        'badge' => 'Complete catalog',
     ],
 ];
 
@@ -152,7 +156,7 @@ if ($cta_image_file && file_exists($cta_image_file)) {
 <main>
     <section class="front-hero">
         <div class="container front-hero__grid">
-            <div class="front-hero__copy">
+            <div class="front-hero__copy hero-pop-card">
                 <h1 class="headline-xl">Consistent Supply Proven Quality</h1>
                 <p class="subhead">Near-shore manufacturing with U.S. importer accountability. Traceable lots,
                     committee-ready documentation, and delivery in days, not weeks.</p>
@@ -166,16 +170,83 @@ if ($cta_image_file && file_exists($cta_image_file)) {
                 <div class="front-hero__badge">
                     <span class="front-hero__eyebrow">Importer-led disposable solutions</span>
                 </div>
-                <div class="front-hero__image-wrap">
+                <div class="front-hero__image-wrap" id="hero-video-wrapper">
                     <video class="front-hero__video"
                         poster="<?php echo esc_url($uploads . 'hero_img_front-min.jpg'); ?>" autoplay muted loop
                         playsinline>
                         <source src="<?php echo esc_url($media . 'front-hero.mp4'); ?>" type="video/mp4">
                         <source src="<?php echo esc_url($media . 'front-hero.mov'); ?>" type="video/quicktime">
                     </video>
+                    <button type="button" class="hero-video-fullscreen" id="hero-fullscreen-toggle"
+                        aria-label="Enter full screen">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                        </svg>
+                    </button>
+                    <button type="button" class="hero-video-volume" id="hero-volume-toggle" aria-label="Unmute">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                            <path d="M23 9l-6 6"></path>
+                            <path d="M17 9l6 6"></path>
+                        </svg>
+                    </button>
                     <img class="front-hero__pattern" src="<?php echo esc_url($uploads . 'pattern_pills_right.png'); ?>"
                         alt="" loading="lazy" decoding="async" />
                 </div>
+                <script>
+                    (function () {
+                        var wrapper = document.getElementById('hero-video-wrapper');
+                        var btn = document.getElementById('hero-fullscreen-toggle');
+
+                        if (!wrapper || !btn) return;
+
+                        btn.addEventListener('click', function () {
+                            if (!document.fullscreenElement) {
+                                wrapper.requestFullscreen().catch(err => {
+                                    console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+                                });
+                            } else {
+                                document.exitFullscreen();
+                            }
+                        });
+
+                        document.addEventListener('fullscreenchange', function () {
+                            const isFullscreen = document.fullscreenElement === wrapper;
+                            wrapper.classList.toggle('is-fullscreen', isFullscreen);
+
+                            if (isFullscreen) {
+                                btn.setAttribute('aria-label', 'Exit full screen');
+                                btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>';
+                            } else {
+                                btn.setAttribute('aria-label', 'Enter full screen');
+                                btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" /></svg>';
+                            }
+                        });
+
+                        // Volume Toggle Logic
+                        var volumeBtn = document.getElementById('hero-volume-toggle');
+                        var video = wrapper.querySelector('video');
+
+                        if (volumeBtn && video) {
+                            volumeBtn.addEventListener('click', function () {
+                                video.muted = !video.muted;
+                                updateVolumeIcon();
+                            });
+
+                            function updateVolumeIcon() {
+                                if (video.muted) {
+                                    volumeBtn.setAttribute('aria-label', 'Unmute');
+                                    volumeBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M23 9l-6 6"></path><path d="M17 9l6 6"></path></svg>';
+                                } else {
+                                    volumeBtn.setAttribute('aria-label', 'Mute');
+                                    volumeBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>';
+                                }
+                            }
+                        }
+                    })();
+                </script>
                 <div class="front-hero__cta btn-group">
                     <a class="btn btn-primary" href="<?php echo esc_url(home_url('/shop/')); ?>">Explore product
                         catalog</a>
@@ -226,14 +297,16 @@ if ($cta_image_file && file_exists($cta_image_file)) {
         </div>
     </section>
 
-    <section class="front-capabilities">
+    <section class="front-capabilities" id="florence-difference">
         <div class="container">
-            <h2 class="section-title">Where Florence makes the difference</h2>
-            <p class="section-lead">From product engineering to committee approval and final delivery, our teams stay
+            <h2 class="section-title reveal-init">Where Florence makes the difference</h2>
+            <p class="section-lead reveal-init">From product engineering to committee approval and final delivery, our
+                teams stay
                 accountable so yours can move faster.</p>
-            <div class="front-capabilities__grid">
-                <?php foreach ($capability_cards as $card): ?>
-                    <article class="front-capabilities__card">
+            <div class="front-capabilities__grid reveal-init-grid">
+                <?php foreach ($capability_cards as $index => $card): ?>
+                    <article class="front-capabilities__card reveal-init-card" tabindex="0" role="button"
+                        aria-pressed="false" style="--stagger: <?php echo $index; ?>;">
                         <h3><?php echo esc_html($card['title']); ?></h3>
                         <p><?php echo esc_html($card['copy']); ?></p>
                         <ul>
@@ -245,19 +318,88 @@ if ($cta_image_file && file_exists($cta_image_file)) {
                 <?php endforeach; ?>
             </div>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const section = document.getElementById('florence-difference');
+                if (!section) return;
+
+                // Progressive Enhancement: Add class to enable animations
+                // This ensures if JS fails, content remains visible (default CSS)
+                section.classList.add('js-interactions-enabled');
+
+                // 1. Scroll Reveal
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            section.classList.add('is-revealed');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 }); // Lower threshold for easier triggering
+                observer.observe(section);
+
+                // 2. Card Interaction
+                const grid = section.querySelector('.front-capabilities__grid');
+                const cards = section.querySelectorAll('.front-capabilities__card');
+
+                if (grid && cards) {
+                    cards.forEach(card => {
+                        // Click interaction
+                        card.addEventListener('click', (e) => {
+                            const isActive = card.classList.contains('is-active');
+                            // Clear all
+                            cards.forEach(c => {
+                                c.classList.remove('is-active');
+                                c.setAttribute('aria-pressed', 'false');
+                            });
+                            grid.classList.remove('has-focus');
+
+                            // Toggle current if it wasn't active
+                            if (!isActive) {
+                                card.classList.add('is-active');
+                                card.setAttribute('aria-pressed', 'true');
+                                grid.classList.add('has-focus');
+                            }
+                        });
+
+                        // Keyboard interaction
+                        card.addEventListener('keydown', (e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                card.click();
+                            } else if (e.key === 'Escape') {
+                                cards.forEach(c => {
+                                    c.classList.remove('is-active');
+                                    c.setAttribute('aria-pressed', 'false');
+                                });
+                                grid.classList.remove('has-focus');
+                            }
+                        });
+                    });
+
+                    // Clear on outside click
+                    document.addEventListener('click', (e) => {
+                        if (!grid.contains(e.target)) {
+                            cards.forEach(c => {
+                                c.classList.remove('is-active');
+                                c.setAttribute('aria-pressed', 'false');
+                            });
+                            grid.classList.remove('has-focus');
+                        }
+                    });
+                }
+            });
+        </script>
     </section>
 
-    <section class="front-solutions"
-        style="background: transparent !important; box-shadow: none !important; border: none !important;">
-        <div class="container"
-            style="background: transparent !important; box-shadow: none !important; border: none !important;">
+    <section class="front-solutions">
+        <div class="container">
             <div class="front-solutions__header">
                 <h2 class="section-title">Emphasizing nearshore reliability</h2>
                 <p class="section-lead">Florence makes sourcing simple. Every product line is documented, staged, and
                     supported by U.S. importer services for quick integration into your network.</p>
             </div>
-            <div class="front-solutions__wall ghost-buster" role="list"
-                style="background: transparent !important; box-shadow: none !important; border: none !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; filter: none !important; outline: none !important;">
+            <div class="front-solutions__wall ghost-buster" role="list">
                 <?php foreach ($solution_cards as $card): ?>
                     <article class="product-card" role="listitem">
                         <div class="product-card__viewport">
@@ -268,6 +410,9 @@ if ($cta_image_file && file_exists($cta_image_file)) {
                                             alt="<?php echo esc_attr($card['title']); ?>" loading="lazy" decoding="async" />
                                     </span>
                                     <span class="product-card__content">
+                                        <?php if (!empty($card['badge'])): ?>
+                                            <span class="product-card__badge"><?php echo esc_html($card['badge']); ?></span>
+                                        <?php endif; ?>
                                         <h3><?php echo esc_html($card['title']); ?></h3>
                                         <p><?php echo esc_html($card['summary']); ?></p>
                                         <span class="product-card__hint">Click to view certifications</span>
@@ -352,63 +497,138 @@ if ($cta_image_file && file_exists($cta_image_file)) {
                 <p class="section-lead">
                     <?php esc_html_e('Drag Florence components into your tray, see auto case counts, and export the summary before requesting a quote.', 'florence-static'); ?>
                 </p>
+                <!-- New Trust Line -->
+                <p class="build-pack__trust-line" style="color: #ffffff !important;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="trust-icon"
+                        style="stroke: #ffffff !important;" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                    <span
+                        style="color: #ffffff !important;"><?php esc_html_e('Committee-ready documentation • Exportable PDF summary', 'florence-static'); ?></span>
+                </p>
             </div>
-            <div class="build-pack__grid">
-                <div class="build-pack__panel build-pack__panel--components">
-                    <h3><?php esc_html_e('Components', 'florence-static'); ?></h3>
-                    <p><?php esc_html_e('Click or drag an item to include it. Each chip shows the default units per case.', 'florence-static'); ?>
-                    </p>
-                    <div class="build-pack__components" data-pack-components>
-                        <?php foreach ($pack_components as $component): ?>
-                            <button type="button" class="build-pack__component"
-                                data-pack-component="<?php echo esc_attr($component['name']); ?>"
-                                data-pack-units="<?php echo esc_attr($component['units']); ?>" draggable="true">
-                                <span class="build-pack__component-title"><?php echo esc_html($component['name']); ?></span>
-                                <small><?php echo esc_html($component['category']); ?> ·
-                                    <?php echo esc_html(sprintf(__('%d per case', 'florence-static'), $component['units'])); ?></small>
-                                <p><?php echo esc_html($component['description']); ?></p>
-                            </button>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-                <div class="build-pack__panel build-pack__panel--summary">
-                    <h3><?php esc_html_e('Pack summary', 'florence-static'); ?></h3>
-                    <div class="build-pack__drop" data-pack-dropzone>
-                        <div class="build-pack__table-wrapper">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th><?php esc_html_e('Component', 'florence-static'); ?></th>
-                                        <th><?php esc_html_e('Qty', 'florence-static'); ?></th>
-                                        <th><?php esc_html_e('Cases', 'florence-static'); ?></th>
-                                        <th><?php esc_html_e('Actions', 'florence-static'); ?></th>
-                                    </tr>
-                                </thead>
-                                <tbody data-pack-summary>
-                                    <tr class="build-pack__empty">
-                                        <td colspan="4">
-                                            <?php esc_html_e('Add components to start configuring your pack.', 'florence-static'); ?>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+
+            <!-- App Canvas Wrapper -->
+            <div class="build-pack__canvas">
+                <div class="build-pack__grid">
+                    <!-- Column 1: Component Selection -->
+                    <div class="build-pack__panel build-pack__panel--components">
+                        <div class="build-pack__panel-header">
+                            <div>
+                                <h3><?php esc_html_e('Components', 'florence-static'); ?></h3>
+                                <p><?php esc_html_e('Click + or drag items to add to your pack.', 'florence-static'); ?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="build-pack__components" data-pack-components>
+                            <?php foreach ($pack_components as $component): ?>
+                                <button type="button" class="build-pack__component"
+                                    data-pack-component="<?php echo esc_attr($component['name']); ?>"
+                                    data-pack-units="<?php echo esc_attr($component['units']); ?>" draggable="true">
+
+                                    <!-- Drag Handle -->
+                                    <span class="build-pack__drag-handle" aria-hidden="true">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" opacity="0.4">
+                                            <circle cx="9" cy="5" r="2" />
+                                            <circle cx="9" cy="12" r="2" />
+                                            <circle cx="9" cy="19" r="2" />
+                                            <circle cx="15" cy="5" r="2" />
+                                            <circle cx="15" cy="12" r="2" />
+                                            <circle cx="15" cy="19" r="2" />
+                                        </svg>
+                                    </span>
+
+                                    <div class="build-pack__component-info">
+                                        <div class="build-pack__component-top">
+                                            <span
+                                                class="build-pack__component-title"><?php echo esc_html($component['name']); ?></span>
+                                            <span class="build-pack__add-icon" aria-label="Add item">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <div class="build-pack__component-meta">
+                                            <span
+                                                class="build-pack__units-pill"><?php echo esc_html(sprintf(__('%d / case', 'florence-static'), $component['units'])); ?></span>
+                                        </div>
+                                        <p class="build-pack__component-desc">
+                                            <?php echo esc_html($component['description']); ?></p>
+                                    </div>
+                                </button>
+                            <?php endforeach; ?>
                         </div>
                     </div>
-                    <div class="build-pack__totals">
-                        <p><?php esc_html_e('Total items', 'florence-static'); ?>: <strong data-pack-count>0</strong>
-                        </p>
-                        <p><?php esc_html_e('Estimated cases', 'florence-static'); ?>: <strong
-                                data-pack-cases>0</strong></p>
-                        <button type="button" class="btn btn-secondary build-pack__clear"
-                            style="font-size: 12px; padding: 4px 12px; margin-left: auto;">
-                            <?php esc_html_e('Clear Pack', 'florence-static'); ?>
-                        </button>
-                    </div>
-                    <div class="build-pack__actions">
-                        <button type="button" class="build-pack__btn build-pack__btn--ghost"
-                            data-pack-pdf><?php esc_html_e('Generate PDF Summary', 'florence-static'); ?></button>
-                        <a class="build-pack__btn"
-                            href="<?php echo esc_url(home_url('/request-quote/')); ?>"><?php esc_html_e('Request a Quote', 'florence-static'); ?></a>
+
+                    <!-- Column 2: Pack Summary (Receipt) -->
+                    <div class="build-pack__panel build-pack__panel--summary">
+                        <!-- Sticky Status Bar -->
+                        <div class="build-pack__status-bar">
+                            <div class="build-pack__status-group">
+                                <div class="build-pack__status-item">
+                                    <span class="label"><?php esc_html_e('Total Items', 'florence-static'); ?></span>
+                                    <strong class="val" data-pack-count>0</strong>
+                                </div>
+                                <div class="build-pack__status-item">
+                                    <span class="label"><?php esc_html_e('Est. Cases', 'florence-static'); ?></span>
+                                    <strong class="val" data-pack-cases>0</strong>
+                                </div>
+                            </div>
+                            <button type="button" class="build-pack__clear">
+                                <?php esc_html_e('Clear', 'florence-static'); ?>
+                            </button>
+                        </div>
+
+                        <div class="build-pack__drop" data-pack-dropzone>
+                            <div class="build-pack__table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th class="col-name"><?php esc_html_e('Component', 'florence-static'); ?>
+                                            </th>
+                                            <th class="col-qty"><?php esc_html_e('Qty', 'florence-static'); ?></th>
+                                            <th class="col-cases"><?php esc_html_e('Cases', 'florence-static'); ?></th>
+                                            <th class="col-action"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody data-pack-summary>
+                                        <!-- Empty State -->
+                                        <tr class="build-pack__empty">
+                                            <td colspan="4">
+                                                <div class="build-pack__empty-state">
+                                                    <div class="empty-icon">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="1.5">
+                                                            <path
+                                                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                                            </path>
+                                                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                                        </svg>
+                                                    </div>
+                                                    <p><?php esc_html_e('Your pack is empty', 'florence-static'); ?></p>
+                                                    <span><?php esc_html_e('Click + or drag items to start', 'florence-static'); ?></span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="build-pack__footer">
+                            <div class="build-pack__actions">
+                                <a class="build-pack__btn build-pack__btn--primary"
+                                    href="<?php echo esc_url(home_url('/request-quote/')); ?>"><?php esc_html_e('Request Quote', 'florence-static'); ?></a>
+                                <button type="button" class="build-pack__btn build-pack__btn--secondary"
+                                    data-pack-pdf><?php esc_html_e('Generate PDF', 'florence-static'); ?></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -434,25 +654,71 @@ if ($cta_image_file && file_exists($cta_image_file)) {
     <section class="product-cta">
         <div class="container product-cta__inner">
             <div class="product-cta__content">
-                <h2 class="section-title">Let’s plan your next sourcing milestone.</h2>
+                <h2 class="section-title">Let’s plan your next <span class="highlight-text">sourcing milestone.</span>
+                </h2>
                 <p class="section-lead">Share your formulary, compliance goals, or logistics challenges. Florence will
                     assemble samples, documentation, and a launch plan tailored to your network.</p>
-                <div class="btn-group">
-                    <a class="btn btn-primary" href="<?php echo esc_url(home_url('/request-samples/')); ?>">Request
-                        samples</a>
-                    <a class="btn btn-secondary" href="<?php echo esc_url(home_url('/contact/')); ?>">Schedule a
-                        time to meet</a>
+
+                <!-- Stepper -->
+                <div class="product-cta__stepper">
+                    <div class="step-item">
+                        <span class="step-icon">1</span>
+                        <span class="step-label"><?php esc_html_e('Share needs', 'florence-static'); ?></span>
+                    </div>
+                    <div class="step-separator">→</div>
+                    <div class="step-item">
+                        <span class="step-icon">2</span>
+                        <span
+                            class="step-label"><?php esc_html_e('We assemble samples/docs', 'florence-static'); ?></span>
+                    </div>
+                    <div class="step-separator">→</div>
+                    <div class="step-item">
+                        <span class="step-icon">3</span>
+                        <span class="step-label"><?php esc_html_e('Align delivery plan', 'florence-static'); ?></span>
+                    </div>
                 </div>
+
+                <div class="btn-group">
+                    <a class="btn btn-primary" href="<?php echo esc_url(home_url('/request-samples/')); ?>">
+                        <svg class="btn-icon" width="18" height="18" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" style="margin-right: 8px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                        <?php esc_html_e('Request samples', 'florence-static'); ?>
+                    </a>
+                    <a class="btn btn-secondary" href="<?php echo esc_url(home_url('/contact/')); ?>">
+                        <svg class="btn-icon" width="18" height="18" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" style="margin-right: 8px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        <?php esc_html_e('Schedule a time to meet', 'florence-static'); ?>
+                    </a>
+                </div>
+
+                <!-- Trust Line -->
+                <p class="product-cta__trust">
+                    <?php esc_html_e('48-hour sample deployment available • Committee-ready documentation', 'florence-static'); ?>
+                </p>
             </div>
             <?php if ($cta_image_data): ?>
                 <figure class="product-cta__media">
                     <img class="product-cta__image" src="<?php echo esc_attr($cta_image_data); ?>"
                         alt="<?php echo esc_attr($cta_image_alt); ?>" loading="lazy" decoding="async" />
+
+                    <!-- Map Overlay -->
+                    <div class="product-cta__map-overlay">
+                        <div class="map-legend">
+                            <span class="legend-dot"></span>
+                            <?php esc_html_e('3PL hubs • Direct-to-hospital lanes', 'florence-static'); ?>
+                        </div>
+                    </div>
                 </figure>
             <?php endif; ?>
         </div>
     </section>
 </main>
 <?php
-get_footer();
+get_footer('child');
 ?>

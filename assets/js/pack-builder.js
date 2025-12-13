@@ -84,35 +84,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const refreshSummary = () => {
     summaryBody.innerHTML = '';
+    const quoteBtn = document.querySelector('.build-pack__btn--primary');
+
+    // Clear State Handling
     if (!selections.size) {
-      const row = document.createElement('tr');
-      row.className = 'build-pack__empty';
-      const cell = document.createElement('td');
-      cell.colSpan = 4;
-      cell.textContent = builder.dataset.emptyMessage || 'Add components to start configuring your pack.';
-      row.appendChild(cell);
-      summaryBody.appendChild(row);
+      summaryBody.innerHTML = `
+        <tr class="build-pack__empty">
+            <td colspan="4">
+                <div class="build-pack__empty-state">
+                    <div class="empty-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    </div>
+                    <p>Your pack is empty</p>
+                    <span>Click + or drag items to start</span>
+                </div>
+            </td>
+        </tr>`;
+
       countTarget.textContent = '0';
       casesTarget.textContent = '0';
+
+      // Reset Quote Link
+      if (quoteBtn && quoteBtn.tagName === 'A') {
+        quoteBtn.classList.add('disabled');
+        quoteBtn.style.opacity = '0.5';
+        quoteBtn.style.pointerEvents = 'none';
+        quoteBtn.href = '#';
+      }
       return;
+    }
+
+    // Active State Handling
+    if (quoteBtn) {
+      quoteBtn.classList.remove('disabled');
+      quoteBtn.style.opacity = '1';
+      quoteBtn.style.pointerEvents = 'auto';
     }
 
     let totalQty = 0;
     let totalCases = 0;
+    const quoteItems = [];
 
     selections.forEach((item, name) => {
       const row = document.createElement('tr');
       const qty = item.qty;
-      const cases = Math.max(1, Math.ceil(qty / item.units));
+      const cases = Math.ceil(qty / item.units);
 
       totalQty += qty;
       totalCases += cases;
 
+      // Build quote payload: "ItemName:Qty"
+      quoteItems.push(`${encodeURIComponent(name)}:${qty}`);
+
       row.innerHTML = `
-        <td>${name}</td>
+        <td><span style="font-weight:500; color:#334155; font-size:13px;">${name}</span></td>
         <td>${qty}</td>
         <td>${cases}</td>
-        <td><button type="button" class="build-pack__remove" data-pack-remove="${name}">Remove</button></td>
+        <td style="text-align:right;"><button type="button" class="build-pack__remove" data-pack-remove="${name}" aria-label="Remove item">Remove</button></td>
       `;
 
       summaryBody.appendChild(row);
@@ -120,12 +148,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     countTarget.textContent = totalQty.toString();
     casesTarget.textContent = totalCases.toString();
+
+    // Update Quote Link with Payload
+    if (quoteBtn && quoteBtn.tagName === 'A') {
+      const baseUrl = quoteBtn.getAttribute('data-base-url') || '/request-quote/';
+      // Construct a URL with query params
+      const finalUrl = `${baseUrl}?pack_items=${quoteItems.join('|')}&total_cases=${totalCases}`;
+      quoteBtn.href = finalUrl;
+    }
   };
 
   const addComponent = (name, units) => {
     if (!name || !units) return;
-    const existing = selections.get(name) || { qty: 0, units: parseInt(units, 10) || 1 };
-    existing.qty += 1;
+    const parsedUnits = parseInt(units, 10) || 1;
+
+    // Safety check for invalid units
+    if (parsedUnits <= 0) return;
+
+    const existing = selections.get(name) || { qty: 0, units: parsedUnits };
+    existing.qty += 1; // Increment by 1 unit
     selections.set(name, existing);
     refreshSummary();
   };
@@ -134,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!selections.has(name)) {
       return;
     }
-    selections.delete(name);
+    selections.delete(name); // Remove entire item row for simplicity
     refreshSummary();
   };
 

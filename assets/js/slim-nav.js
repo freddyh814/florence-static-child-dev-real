@@ -34,6 +34,7 @@
     const item = btn.closest('.mega-nav__item');
     const panel = item ? item.querySelector('[data-mega-panel]') : null;
     if (!panel) return;
+    /* User requested hover-only behavior. Disabling click toggle.
     btn.addEventListener('click', function (event) {
       event.stopPropagation();
       const shouldOpen = !btn.classList.contains('is-open');
@@ -43,6 +44,7 @@
         panel.classList.add('is-open');
       }
     });
+    */
   });
 
   document.addEventListener('click', function (event) {
