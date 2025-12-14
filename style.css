@@ -1852,13 +1852,12 @@ button[data-pack-quote],
   gap: 24px;
   padding-left: 0;
   margin: 0;
-}
 
-/* Reset */
-margin-bottom: 4px;
-margin-right: auto;
-margin-left: -35px;
-/* Shift text further left as requested */
+  /* Reset */
+  margin-bottom: 4px;
+  margin-right: auto;
+  margin-left: -40px;
+  /* Shift aligned to products pill */
 }
 
 .language-toggle {
@@ -1868,8 +1867,8 @@ margin-left: -35px;
   padding: 2px;
   margin-bottom: 4px;
   position: relative;
-  top: -6px;
-  /* Move slider up 6px using relative positioning */
+  top: 0;
+  /* Adjusted down 3px from -3px */
   /* Visual alignment */
 }
 
@@ -1894,6 +1893,9 @@ margin-left: -35px;
 .brand-text {
   margin-left: 0 !important;
   margin-top: 0 !important;
+  position: relative;
+  left: 4px;
+  /* Shift text right 4px without moving siblings */
 }
 
 .brand-line-1 {
@@ -2215,6 +2217,82 @@ margin-left: -35px;
   height: 42px;
   width: auto;
   object-fit: contain;
+}
+
+/* Ensure wrapper is a positioning context */
+.brand-text-wrapper {
+  position: relative;
+}
+
+/* Header Tagline - Absolute Positioned */
+.header-tagline {
+  font-family: 'Inter', sans-serif;
+  /* Premium brand font */
+  font-weight: 500;
+  /* Medium weight */
+  letter-spacing: -0.02em;
+  /* Tighter premium spacing */
+  font-size: 28px;
+  /* Doubled size (100% increase) */
+  color: #0B1220;
+  white-space: nowrap;
+
+  /* Remove from flow to restore toggle position */
+  position: absolute;
+
+  /* Position to the right of the wrapper (and toggle) */
+  left: 100%;
+  margin-left: 4px;
+  /* Adjusted right 20px from -16px */
+  /* Align vertically "lower", matching CTA pills */
+  top: 67px;
+  /* Adjusted down 2px from 65px */
+
+  /* Option #1: Orange + Subtle Shimmer Sweep */
+  color: #E67600;
+  /* Matches header orange */
+
+  /* Shimmer Gradient Overlay */
+  background: linear-gradient(110deg,
+      #E67600 45%,
+      rgba(255, 255, 255, 0.8) 50%,
+      #E67600 55%);
+  background-size: 250% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* Animation: 15s continuous slow loop */
+  animation: shimmer-sweep 15s infinite linear;
+}
+
+@keyframes shimmer-sweep {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+    /* Continuous sweep */
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-tagline {
+    animation: none;
+    background: none;
+    -webkit-text-fill-color: initial;
+    color: #E67600;
+  }
+}
+
+
+@media (max-width: 1200px) {
+
+  /* Hide sooner to prevent collision on mid-size screens */
+  .header-tagline {
+    display: none;
+  }
 }
 
 .language-toggle {
