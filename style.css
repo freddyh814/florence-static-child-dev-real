@@ -2235,6 +2235,7 @@ button[data-pack-quote],
   font-size: 28px;
   /* Doubled size (100% increase) */
   color: #0B1220;
+  -webkit-text-stroke: 1px #0B1220;
   white-space: nowrap;
 
   /* Remove from flow to restore toggle position */
