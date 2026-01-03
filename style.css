@@ -2224,48 +2224,7 @@ button[data-pack-quote],
   position: relative;
 }
 
-/* Header Tagline - Absolute Positioned */
-.header-tagline {
-  font-family: 'Inter', sans-serif;
-  /* Premium brand font */
-  font-weight: 500;
-  /* Medium weight */
-  letter-spacing: -0.02em;
-  /* Tighter premium spacing */
-  font-size: 28px;
-  /* Doubled size (100% increase) */
-  color: #0B1220;
-  -webkit-text-stroke: 1px #0B1220;
-  white-space: nowrap;
 
-  /* Remove from flow to restore toggle position */
-  position: absolute;
-
-  /* Position to the right of the wrapper (and toggle) */
-  left: 100%;
-  margin-left: 4px;
-  /* Adjusted right 20px from -16px */
-  /* Align vertically "lower", matching CTA pills */
-  top: 67px;
-  /* Adjusted down 2px from 65px */
-
-  /* Option #1: Orange + Subtle Shimmer Sweep */
-  color: #E67600;
-  /* Matches header orange */
-
-  /* Shimmer Gradient Overlay */
-  background: linear-gradient(110deg,
-      #E67600 45%,
-      rgba(255, 255, 255, 0.8) 50%,
-      #E67600 55%);
-  background-size: 250% 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  /* Animation: 15s continuous slow loop */
-  animation: shimmer-sweep 15s infinite linear;
-}
 
 @keyframes shimmer-sweep {
   0% {
@@ -2278,14 +2237,7 @@ button[data-pack-quote],
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .header-tagline {
-    animation: none;
-    background: none;
-    -webkit-text-fill-color: initial;
-    color: #E67600;
-  }
-}
+
 
 
 @media (max-width: 1200px) {

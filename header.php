@@ -136,8 +136,6 @@
                             </a>
                         </div>
 
-                        <span class="header-tagline">Embracing Life’s Needs</span>
-
                         <div class="language-toggle" data-language-switch>
                             <button type="button" class="is-active" data-lang-button="en">EN</button>
                             <button type="button" data-lang-button="es">ES</button>
