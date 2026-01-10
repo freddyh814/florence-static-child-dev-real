@@ -1,7 +1,9 @@
 <?php
 /**
- * Template Name: Catalog Hub
- * Template Post Type: page
+ * WooCommerce Template Override
+ * 
+ * This file overrides standard WooCommerce templates (shop, category, archive).
+ * It loads the Catalog UI for these pages.
  */
 
 get_header();

@@ -1,325 +1,430 @@
-/**
- * Florence Catalog Controller
- * Handles search, filtering, and table toggling.
- */
-document.addEventListener('DOMContentLoaded', function() {
-    const catalogRoot = document.getElementById('fl-catalog-root');
-    if (!catalogRoot) return;
 
-    // Data injected from PHP
-    const catalogData = window.FL_CATALOG_DATA || [];
-    
-    // State
-    let state = {
-        query: '',
+/**
+ * Catalog App
+ * Handles search, filtering, and display of the product catalog.
+ * Supports EN/ES localization.
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- State Management ---
+    const STATE = {
+        products: window.FL_CATALOG_DATA || [],
+        lang: 'en', // Default
         filters: {
+            search: '',
             category: 'All',
             tier: 'All',
             sterile: 'All',
-            size: 'All',
-            type: 'All'
+            size: 'All'
         },
-        view: 'grid' // 'grid' | 'table'
+        view: 'card' // 'card' or 'table'
     };
 
-    // DOM Elements
-    const searchInput = document.getElementById('fl-search-input');
-    const clearSearchBtn = document.getElementById('fl-search-clear');
-    const resultsContainer = document.getElementById('fl-results-container');
-    const resultsCount = document.getElementById('fl-results-count');
-    const viewToggle = document.getElementById('fl-view-toggle');
-    const resetBtns = document.querySelectorAll('.fl-reset-btn');
-    
-    // Filter Elements
-    const filterEls = {
-        category: document.getElementById('filter-category'),
-        tier: document.getElementById('filter-tier'),
-        sterile: document.getElementById('filter-sterile'),
-        size: document.getElementById('filter-size'),
-        type: document.getElementById('filter-type'),
+    // --- I18N Dictionary ---
+    const I18N = {
+        en: {
+            searchPlaceholder: "Search products (e.g., 'Surgical gown', '310130', 'XL', 'sterile')",
+            filterCategory: "Category",
+            filterTier: "Tier",
+            filterSterile: "Sterile",
+            filterSize: "Size",
+            resetFilters: "Reset filters",
+            showingResults: "Showing {count} results",
+            noResults: "No matches found.",
+            viewDetails: "View details",
+            tableCode: "Code",
+            tableProduct: "Product",
+            tableDetails: "Details (Size / Sterile)",
+            tableCategory: "Category",
+            allCategories: "All Categories",
+            allTiers: "All Tiers",
+            allSizes: "All Sizes",
+            any: "Any",
+            yes: "Yes",
+            no: "No",
+            loading: "Loading catalog..."
+        },
+        es: {
+            searchPlaceholder: "Buscar productos (ej. 'Bata quirúrgica', '310130', 'XL', 'estéril')",
+            filterCategory: "Categoría",
+            filterTier: "Nivel",
+            filterSterile: "Estéril",
+            filterSize: "Talla",
+            resetFilters: "Restablecer filtros",
+            showingResults: "Mostrando {count} resultados",
+            noResults: "No se encontraron resultados.",
+            viewDetails: "Ver detalles",
+            tableCode: "Código",
+            tableProduct: "Producto",
+            tableDetails: "Detalles (Talla / Estéril)",
+            tableCategory: "Categoría",
+            allCategories: "Todas las Categorías",
+            allTiers: "Todos los Niveles",
+            allSizes: "Todas las Tallas",
+            any: "Cualquiera",
+            yes: "Sí",
+            no: "No",
+            loading: "Cargando catálogo..."
+        }
     };
 
-    // Initialize
+    // --- DOM Elements ---
+    const dom = {
+        root: document.getElementById('fl-catalog-root'),
+        resultsContainer: document.getElementById('fl-results-container'),
+        searchInput: document.getElementById('fl-search-input'),
+        searchClear: document.getElementById('fl-search-clear'),
+        filterCategory: document.getElementById('filter-category'),
+        filterTier: document.getElementById('filter-tier'),
+        filterSterile: document.getElementById('filter-sterile'),
+        filterSize: document.getElementById('filter-size'),
+        resetBtn: document.querySelector('.fl-reset-btn'),
+        resultsCount: document.getElementById('fl-results-count'),
+        viewToggle: document.getElementById('fl-view-toggle'), // Checkbox
+        heroTitle: document.querySelector('.catalog-hero h1'),
+        heroSubtext: document.querySelector('.catalog-hero .subtext'),
+        labelCategory: document.querySelector('.filter-group:nth-child(1) label'),
+        labelTier: document.querySelector('.filter-group:nth-child(2) label'),
+        labelSterile: document.querySelector('.filter-group:nth-child(3) label'),
+        labelSize: document.querySelector('.filter-group:nth-child(4) label'),
+        cardLabel: document.querySelector('.view-toggle-wrapper span:first-child'),
+        tableLabel: document.querySelector('.view-toggle-wrapper span:last-child'),
+        langButtons: document.querySelectorAll('[data-lang-button]')
+    };
+
+    if (!dom.root) return; // Exit if not on catalog page
+
+    // --- Initialization ---
     init();
 
     function init() {
-        // Read URL Params
-        const params = new URLSearchParams(window.location.search);
-        if (params.has('category')) {
-            // Map slug to Name if needed, or loosely match
-            const slug = params.get('category').toLowerCase();
-            state.filters.category = mapSlugToCategory(slug);
-            if (filterEls.category) filterEls.category.value = state.filters.category;
-        }
-        if (params.has('q')) {
-            state.query = params.get('q');
-            searchInput.value = state.query;
-            state.filters.category = 'All'; // Specific search overrides category landing usually, but let's keep it flexible
-            filterEls.category.value = 'All';
-        }
+        // Detect initial language
+        detectLanguage();
 
+        // Bind Events
         bindEvents();
+
+        // Read URL Params
+        readUrlParams();
+
+        // Initial Render
         render();
     }
 
-    function mapSlugToCategory(slug) {
-        const map = {
-            'gowns': 'Isolation & Surgical Gowns',
-            'masks': 'Face Masks & Respiratory',
-            'drapes': 'Drapes & Procedure Packs',
-            'packs': 'Drapes & Procedure Packs',
-            'accessories': 'Gloves & Accessories',
-            'private-label': 'Private Label Programs'
-        };
-        // Fuzzy match or direct lookup
-        for (let key in map) {
-            if (slug.includes(key)) return map[key];
+    function detectLanguage() {
+        // Check html lang attribute or header active class
+        const htmlLang = document.documentElement.lang.toLowerCase();
+        if (htmlLang.includes('es')) {
+            STATE.lang = 'es';
+        } else {
+            // Check active button logic from header if present
+            const activeBtn = document.querySelector('[data-lang-button].is-active');
+            if (activeBtn) {
+                const lang = activeBtn.getAttribute('data-lang-button');
+                if (lang === 'es') STATE.lang = 'es';
+            }
         }
-        return 'All';
+        applyLanguageToUI();
     }
 
     function bindEvents() {
-        // Search (Debounced)
-        let debounceTimer;
-        searchInput.addEventListener('input', (e) => {
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => {
-                state.query = e.target.value.trim();
-                updateSearchUI();
-                render();
-            }, 300);
-        });
-
-        // Clear Search
-        clearSearchBtn.addEventListener('click', () => {
-            state.query = '';
-            searchInput.value = '';
-            updateSearchUI();
+        // Search
+        dom.searchInput.addEventListener('input', debounce((e) => {
+            STATE.filters.search = e.target.value.trim().toLowerCase();
+            updateUrl();
             render();
-            searchInput.focus();
+        }, 300));
+
+        dom.searchClear.addEventListener('click', () => {
+            dom.searchInput.value = '';
+            STATE.filters.search = '';
+            updateUrl();
+            render();
+            dom.searchInput.focus();
         });
 
         // Filters
-        Object.keys(filterEls).forEach(key => {
-            filterEls[key].addEventListener('change', (e) => {
-                state.filters[key] = e.target.value;
+        [dom.filterCategory, dom.filterTier, dom.filterSterile, dom.filterSize].forEach(el => {
+            if (!el) return;
+            el.addEventListener('change', () => {
+                STATE.filters.category = dom.filterCategory.value;
+                STATE.filters.tier = dom.filterTier.value;
+                STATE.filters.sterile = dom.filterSterile.value;
+                STATE.filters.size = dom.filterSize.value;
+                updateUrl();
                 render();
             });
         });
 
         // Reset
-        resetBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                resetFilters();
+        if (dom.resetBtn) {
+            dom.resetBtn.addEventListener('click', () => {
+                STATE.filters.search = '';
+                STATE.filters.category = 'All';
+                STATE.filters.tier = 'All';
+                STATE.filters.sterile = 'All';
+                STATE.filters.size = 'All';
+
+                dom.searchInput.value = '';
+                dom.filterCategory.value = 'All';
+                dom.filterTier.value = 'All';
+                dom.filterSterile.value = 'All';
+                dom.filterSize.value = 'All';
+
+                updateUrl();
+                render();
             });
-        });
+        }
 
         // View Toggle
-        viewToggle.addEventListener('change', (e) => {
-            state.view = e.target.checked ? 'table' : 'grid';
-            render();
+        if (dom.viewToggle) {
+            dom.viewToggle.addEventListener('change', (e) => {
+                STATE.view = e.target.checked ? 'table' : 'card';
+                render();
+            });
+        }
+
+        // Language Switch Events (Header integration)
+        dom.langButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const newLang = btn.getAttribute('data-lang-button');
+                if (newLang && newLang !== STATE.lang) {
+                    STATE.lang = newLang;
+                    applyLanguageToUI();
+                    render(); // Re-render products in new language
+                }
+            });
         });
     }
 
-    function resetFilters() {
-        state.query = '';
-        searchInput.value = '';
-        state.filters = {
-            category: 'All',
-            tier: 'All',
-            sterile: 'All',
-            size: 'All',
-            type: 'All'
-        };
-        
-        // Reset UI
-        Object.keys(filterEls).forEach(key => filterEls[key].value = 'All');
-        updateSearchUI();
-        render();
-    }
+    function readUrlParams() {
+        const params = new URLSearchParams(window.location.search);
 
-    function updateSearchUI() {
-        if (state.query.length > 0) {
-            clearSearchBtn.style.display = 'block';
-        } else {
-            clearSearchBtn.style.display = 'none';
+        // Search with pre-fill
+        if (params.has('q')) {
+            STATE.filters.search = params.get('q').toLowerCase();
+            dom.searchInput.value = STATE.filters.search;
+        }
+
+        // Category mapping (slug -> Name)
+        if (params.has('category')) {
+            const catSlug = params.get('category');
+            const catName = mapSlugToCategory(catSlug);
+            if (catName) {
+                STATE.filters.category = catName;
+                // If the option exists in dropdown, select it
+                const option = Array.from(dom.filterCategory.options).find(o => o.value === catName);
+                if (option) dom.filterCategory.value = catName;
+            }
         }
     }
 
-    function filterData() {
-        return catalogData.filter(item => {
-            // 1. Text Search (Name, Code, Desc, Health Code)
-            if (state.query) {
-                const q = state.query.toLowerCase();
-                const searchable = [
-                    item.name,
-                    item.description,
-                    item.filters.codes.join(' '),
-                    item.skus.map(s => s.health_code).join(' ')
-                ].join(' ').toLowerCase();
-                
-                if (!searchable.includes(q)) return false;
-            }
+    function updateUrl() {
+        const params = new URLSearchParams();
+        if (STATE.filters.search) params.set('q', STATE.filters.search);
 
-            // 2. Category
-            if (state.filters.category !== 'All' && item.category !== state.filters.category) return false;
+        // Only set category param if it's one of our main slugs for deep linking logic
+        // Reverse map simple implementation for core categories
+        if (STATE.filters.category !== 'All') {
+            // Check specific slugs
+            if (STATE.filters.category.includes('Gowns')) params.set('category', 'gowns');
+            else if (STATE.filters.category.includes('Masks')) params.set('category', 'masks');
+            else if (STATE.filters.category.includes('Drapes')) params.set('category', 'drapes');
+            else if (STATE.filters.category.includes('Accessories')) params.set('category', 'accessories');
+            else if (STATE.filters.category.includes('Private')) params.set('category', 'private-label');
+        }
 
-            // 3. Tier
-            if (state.filters.tier !== 'All' && item.tier !== state.filters.tier) return false;
+        const newUrl = `${window.location.pathname}?${params.toString()}`;
+        window.history.replaceState(null, '', newUrl);
+    }
 
-            // 4. Product Type
-            if (state.filters.type !== 'All' && item.type !== state.filters.type) return false;
+    // --- Rendering ---
 
-            // 5. Sterile
-            if (state.filters.sterile !== 'All') {
-                const wantSterile = state.filters.sterile === 'Sterile';
-                // If filtering for Sterile, item must have at least one sterile SKU
-                // If filtering for Non-Sterile, item must have at least one non-sterile SKU (or all non-sterile?)
-                // Simplified: If 'Sterile' selected, show items that ARE sterile. 
-                // Using 'filters.sterile' boolean from PHP which is "is_any_sterile"
-                if (wantSterile && !item.filters.sterile) return false;
-                if (!wantSterile && item.filters.sterile) return false; // Strict? Or relaxed?
-                // Let's assume strict separation for now or check individual SKUs
-            }
+    function applyLanguageToUI() {
+        const dict = I18N[STATE.lang];
 
-            // 6. Size
-            if (state.filters.size !== 'All') {
-                if (!item.filters.sizes.includes(state.filters.size)) return false;
-            }
+        // Hero
+        if (dom.heroTitle) dom.heroTitle.textContent = (STATE.lang === 'es') ? 'Productos' : 'Products';
+        if (dom.heroSubtext) dom.heroSubtext.textContent = (STATE.lang === 'es') ?
+            "Busque por nombre, código, talla, estéril o clave." :
+            "Search by product name, code, size, sterile status, or health sector code.";
 
-            return true;
-        });
+        // Inputs
+        dom.searchInput.placeholder = dict.searchPlaceholder;
+
+        // Labels
+        if (dom.labelCategory) dom.labelCategory.textContent = dict.filterCategory;
+        if (dom.labelTier) dom.labelTier.textContent = dict.filterTier;
+        if (dom.labelSterile) dom.labelSterile.textContent = dict.filterSterile;
+        if (dom.labelSize) dom.labelSize.textContent = dict.filterSize;
+        if (dom.resetBtn) dom.resetBtn.textContent = dict.resetFilters;
+
+        // Dropdown placeholders (first option)
+        if (dom.filterCategory.options[0]) dom.filterCategory.options[0].textContent = dict.allCategories;
+        if (dom.filterTier.options[0]) dom.filterTier.options[0].textContent = dict.allTiers;
+        if (dom.filterSterile.options[0]) dom.filterSterile.options[0].textContent = dict.any;
+        if (dom.filterSize.options[0]) dom.filterSize.options[0].textContent = dict.allSizes;
+
+        // View Toggle Labels
+        // Note: Simple text replacement
+        // dom.cardLabel.textContent = (STATE.lang === 'es') ? 'Tarjetas' : 'Card';
+        // dom.tableLabel.textContent = (STATE.lang === 'es') ? 'Tabla' : 'Table';
     }
 
     function render() {
-        const filtered = filterData();
-        
+        // Filter Data
+        const filtered = STATE.products.filter(p => {
+            // Determine text to search against (check both langs for robust search if user types English in Spanish mode)
+            const pNameEn = (p.name || '').toLowerCase();
+            const pNameEs = (p.name_es || '').toLowerCase();
+            const pDescEn = (p.description || '').toLowerCase();
+            const pDescEs = (p.description_es || '').toLowerCase();
+
+            const matchesSearch = !STATE.filters.search ||
+                pNameEn.includes(STATE.filters.search) ||
+                pNameEs.includes(STATE.filters.search) ||
+                pDescEn.includes(STATE.filters.search) ||
+                pDescEs.includes(STATE.filters.search) ||
+                p.id.includes(STATE.filters.search) ||
+                p.skus.some(s => s.code.toLowerCase().includes(STATE.filters.search) || s.health_code.includes(STATE.filters.search));
+
+            const matchesCategory = STATE.filters.category === 'All' || p.category === STATE.filters.category; // Note: Category logic relies on the English key for filtering currently
+            const matchesTier = STATE.filters.tier === 'All' || p.tier === STATE.filters.tier;
+
+            // Check Sterile (at least one SKU matches)
+            let matchesSterile = true;
+            if (STATE.filters.sterile === 'Sterile') matchesSterile = p.filters.sterile === true;
+            if (STATE.filters.sterile === 'Non-Sterile') matchesSterile = p.filters.sterile === false;
+
+            // Check Size (at least one SKU matches)
+            const matchesSize = STATE.filters.size === 'All' || p.filters.sizes.includes(STATE.filters.size);
+
+            return matchesSearch && matchesCategory && matchesTier && matchesSterile && matchesSize;
+        });
+
         // Update Count
-        resultsCount.textContent = `Showing ${filtered.length} results`;
+        const dict = I18N[STATE.lang];
+        dom.resultsCount.textContent = dict.showingResults.replace('{count}', filtered.length);
 
-        if (state.filters.category === 'Private Label Programs' && filtered.length === 0) {
-           // Special Empty State handled in renderEmpty? Or Just show custom header?
-           // Proceed to empty state but maybe inject Private Label Content
-        }
-
+        // Render Content
         if (filtered.length === 0) {
-            resultsContainer.innerHTML = renderEmpty();
-            return;
-        }
-
-        if (state.view === 'grid') {
-            resultsContainer.innerHTML = `<div class="catalog-grid-view">${filtered.map(renderCard).join('')}</div>`;
-            bindCardEvents();
+            dom.resultsContainer.innerHTML = `<div class="catalog-empty">${dict.noResults}</div>`;
         } else {
-            resultsContainer.innerHTML = renderTable(filtered);
+            dom.resultsContainer.innerHTML = ''; // Clear
+            if (STATE.view === 'card') {
+                renderGrid(filtered, dict);
+            } else {
+                renderTable(filtered, dict);
+            }
         }
     }
 
-    function renderEmpty() {
-        return `
-            <div class="catalog-empty">
-                <h3>No matches found</h3>
-                <p>Try adjusting your search or filters.</p>
-                <button class="fl-reset-btn btn btn-secondary">Reset Filters</button>
-            </div>
-        `;
-    }
+    function renderGrid(products, dict) {
+        const grid = document.createElement('div');
+        grid.className = 'catalog-grid-view';
 
-    function renderCard(item) {
-        const isPack = item.type === 'Pack/Kit';
-        
-        return `
-            <article class="cat-card">
+        products.forEach(p => {
+            const name = (STATE.lang === 'es' && p.name_es) ? p.name_es : p.name;
+            const desc = (STATE.lang === 'es' && p.description_es) ? p.description_es : p.description;
+            // Use English category for consistency with logic or add display map
+            const category = (STATE.lang === 'es' && p.category_es) ? p.category_es : p.category;
+
+            const card = document.createElement('div');
+            card.className = 'cat-card'; // Use cat-card to match CSS styling
+
+            const tierClass = (p.tier.toLowerCase() === 'premium') ? 'badge--premium' : 'badge--standard';
+
+            card.innerHTML = `
                 <div class="cat-card__header">
                     <div class="cat-badges">
-                        <span class="badge badge--${item.tier.toLowerCase()}">${item.tier}</span>
-                        <span class="badge badge--cat">${item.category}</span>
+                        <span class="badge ${tierClass}">${p.tier}</span>
+                        <span class="badge badge--cat">${category}</span>
                     </div>
-                    <h4>${item.name}</h4>
+                    <h4>${name}</h4>
                 </div>
                 
+                <div class="cat-desc">${desc}</div>
+                
                 <div class="cat-card__specs">
-                    <div class="spec-row">
-                        <span>Code:</span> <strong>${item.filters.codes[0] || '-'}</strong>
-                    </div>
-                    <div class="spec-row">
-                        <span>Sterile:</span> <strong>${item.filters.sterile ? 'Yes' : 'No'}</strong>
-                    </div>
+                    ${p.skus.slice(0, 3).map(s => `<span style="font-weight: 700; color: #000000; margin-right: 6px;">${s.code}</span>`).join('')}
+                    ${p.skus.length > 3 ? `<span style="color: #64748b; font-size: 0.9em;">+${p.skus.length - 3}</span>` : ''}
                 </div>
+                <button class="btn btn-primary btn-sm btn-view-details" data-id="${p.id}" style="width: 100%; justify-content: center;">${dict.viewDetails}</button>
+            `;
 
-                <div class="cat-card__body">
-                    <p class="cat-desc">${item.description.substring(0, 100)}...</p>
-                    
-                    <details class="cat-details">
-                        <summary>View Details</summary>
-                        <div class="cat-details-inner">
-                            ${item.content_html}
-                            
-                            ${renderSkuTable(item.skus)}
-                        </div>
-                    </details>
-                </div>
-            </article>
-        `;
+            // Add click listener for details
+            const btn = card.querySelector('.btn-view-details');
+            if (btn) {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // No-op for now
+                });
+            }
+
+            grid.appendChild(card);
+        });
+        dom.resultsContainer.appendChild(grid);
     }
 
-    function renderSkuTable(skus) {
-        return `
-            <table class="sku-mini-table">
+    function renderTable(products, dict) {
+        const tableWrapper = document.createElement('div');
+        tableWrapper.className = 'catalog-table-wrapper';
+
+        let html = `
+            <table class="catalog-table">
                 <thead>
                     <tr>
-                        <th>Code</th>
-                        <th>Size</th>
-                        <th>H. Code</th>
+                        <th>${dict.tableCode}</th>
+                        <th>${dict.tableProduct}</th>
+                        <th>${dict.tableCategory}</th>
+                        <th>${dict.tableDetails}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    ${skus.map(s => `
-                        <tr>
-                            <td>${s.code}</td>
-                            <td>${s.size}</td>
-                            <td>${s.health_code}</td>
-                        </tr>
-                    `).join('')}
-                </tbody>
-            </table>
         `;
+
+        products.forEach(p => {
+            const name = (STATE.lang === 'es' && p.name_es) ? p.name_es : p.name;
+            const category = (STATE.lang === 'es' && p.category_es) ? p.category_es : p.category;
+
+            p.skus.forEach(s => {
+                html += `
+                    <tr>
+                        <td class="code-cell">${s.code}</td>
+                        <td class="name-cell"><strong>${name}</strong></td>
+                        <td>${category}</td>
+                        <td>
+                            <span class="detail-pill">${s.size}</span>
+                            ${s.sterile ? '<span class="detail-icon sterile" title="Sterile">✓</span>' : ''}
+                        </td>
+                    </tr>
+                `;
+            });
+        });
+
+        html += '</tbody></table>';
+        tableWrapper.innerHTML = html;
+        dom.resultsContainer.appendChild(tableWrapper);
     }
 
-    function renderTable(items) {
-        return `
-            <div class="catalog-table-wrapper">
-                <table class="catalog-table">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Code</th>
-                            <th>Category</th>
-                            <th>Size</th>
-                            <th>Sterile</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${items.map(item => `
-                            <tr>
-                                <td><strong>${item.name}</strong></td>
-                                <td>${item.filters.codes[0]}</td>
-                                <td>${item.category}</td>
-                                <td>${item.filters.sizes.join(', ')}</td>
-                                <td>${item.filters.sterile ? 'Yes' : 'No'}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            </div>
-        `;
+    // Helper
+    function debounce(func, wait) {
+        let timeout;
+        return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
     }
 
-    function bindCardEvents() {
-         // Re-bind resets inside empty state if needed
-         const freshResets = resultsContainer.querySelectorAll('.fl-reset-btn');
-         freshResets.forEach(btn => btn.addEventListener('click', () => resetFilters()));
+    function mapSlugToCategory(slug) {
+        if (!slug) return null;
+        if (slug === 'gowns') return 'Isolation & Surgical Gowns';
+        if (slug === 'masks') return 'Face Masks & Respiratory';
+        if (slug === 'drapes') return 'Drapes & Procedure Packs';
+        if (slug === 'accessories') return 'Gloves & Accessories';
+        if (slug === 'private-label') return 'Private Label Programs';
+        return 'All';
     }
 
 });
