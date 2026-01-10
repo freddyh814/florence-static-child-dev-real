@@ -432,10 +432,7 @@ if ($cta_image_file && file_exists($cta_image_file)) {
                     </article>
                 <?php endforeach; ?>
             </div>
-            <div class="front-solutions__cta">
-                <a class="product-card__link" href="<?php echo esc_url(home_url('/product-catalog/')); ?>">Explore
-                    full product catalog</a>
-            </div>
+
         </div>
         <script>
             (function () {
@@ -558,7 +555,8 @@ if ($cta_image_file && file_exists($cta_image_file)) {
                                                 class="build-pack__units-pill"><?php echo esc_html(sprintf(__('%d / case', 'florence-static'), $component['units'])); ?></span>
                                         </div>
                                         <p class="build-pack__component-desc">
-                                            <?php echo esc_html($component['description']); ?></p>
+                                            <?php echo esc_html($component['description']); ?>
+                                        </p>
                                     </div>
                                 </button>
                             <?php endforeach; ?>

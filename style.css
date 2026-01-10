@@ -93,8 +93,8 @@ body.home {
 /* --- New Layout Structure --- */
 .sleek-header {
   width: 100%;
-  background: linear-gradient(180deg, #E67600 0%, #eaeffa 15%) !important;
-  /* Orange only at very top */
+  background: linear-gradient(180deg, rgba(230, 118, 0, 0.8) 0%, #eaeffa 8px) !important;
+  /* Orange confined to top 8px (middle ground) */
   border-bottom: none !important;
   box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.06) !important;
   /* Soft neutral shadow for depth */
@@ -244,7 +244,8 @@ body.home .front-solutions__cta a:hover {
   /* Reduced min-width for better fit */
   gap: 20px;
   /* Reduced gap */
-  margin-top: 48px;
+  margin-top: 24px;
+  /* Reduced gap (was 48px) */
   background: transparent !important;
   box-shadow: none !important;
   border: none !important;
@@ -460,8 +461,9 @@ body.home .front-confidence {
   /* Enforce opaque body color to cover any seams */
   border: none !important;
   box-shadow: none !important;
-  margin-top: -2px !important;
-  /* Increase overlap to 2px */
+  box-shadow: none !important;
+  margin-top: 10px !important;
+  /* Add 10px spacing (was -2px overlap) */
   padding-top: 0 !important;
   /* Remove top padding to bring content closer if needed */
   position: relative;
@@ -1317,6 +1319,10 @@ input[type="submit"] {
   background: linear-gradient(135deg, var(--fl-accent), #3b82f6) !important;
   color: #fff !important;
   border: none !important;
+  /* Remove blue glow, replace with soft neutral shadow */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  text-shadow: none !important;
+  filter: none !important;
 }
 
 .btn-secondary,
@@ -1546,6 +1552,8 @@ table td {
 
 .front-hero__cta .btn.btn-primary:hover {
   background: #e2e8f0;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  /* Clean hover state, no blue glow */
 }
 
 .build-pack__btn,
@@ -1689,7 +1697,8 @@ button[data-pack-quote],
 .sleek-header__container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 24px clamp(16px, 4vw, 32px);
+  padding: 10px clamp(16px, 4vw, 32px);
+  /* Reduced top padding from 24px to 10px to pull content closer to orange strip */
   display: flex;
   flex-direction: row;
   align-items: flex-end;
@@ -1813,7 +1822,163 @@ button[data-pack-quote],
   display: flex;
   align-items: center;
   gap: 16px;
+  margin-left: auto;
+  /* Push to far right */
+  position: relative;
+  top: 5px;
+  /* Shift down 5px as requested */
 }
+
+/* 
+   --------------------------------------------------
+   Header Context Block (New)
+   --------------------------------------------------
+*/
+.header-context-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-left: 24px;
+  /* Space from nav pills */
+  margin-right: 24px;
+  /* Space from buttons */
+  white-space: nowrap;
+  line-height: 1.2;
+  flex-shrink: 0;
+  position: relative;
+  top: 0px;
+  /* Shift down 0px (was 2px, moved up 2px) */
+  left: -15px;
+  /* Shift left 15px (was -28px, moved right 13px) */
+  transform: scale(1.1);
+  transform-origin: left center;
+  transform: scale(1.1);
+  transform-origin: left center;
+  /* Scale up 10% from the left anchor */
+}
+
+/* Trust Icons Row */
+.context-trust-icons {
+  display: flex;
+  gap: 18px;
+  /* Increased from 15px */
+  margin-left: 50px;
+  /* Moved right 50px in total (was 30px) */
+  /* Increased spacing slightly for larger icons */
+  margin-bottom: 6px;
+  /* Space above persona toggle */
+  color: #334155;
+  /* Slate 700 base */
+  opacity: 0.35;
+  /* Muted per request */
+  align-items: center;
+  justify-content: flex-start;
+  line-height: 1;
+}
+
+.context-trust-icons svg {
+  width: 20px;
+  /* Reduced by 20% (was 25px) */
+  height: 20px;
+  stroke-width: 1.5px;
+  /* Slightly thinner stroke for larger size to maintain elegance */
+}
+
+.context-persona {
+  font-size: 1.2rem;
+  /* Reduced by 30% from 1.7rem */
+  color: #64748b;
+  /* Muted */
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.persona-item {
+  cursor: default;
+  /* No pointer to imply non-clickable feeling unless needed */
+  transition: color 0.2s;
+}
+
+.persona-item.is-active {
+  color: #334155;
+  /* Slightly darker */
+  border-bottom: 2px solid #2563eb;
+  /* Subtle underlined indicator */
+}
+
+.persona-sep {
+  color: #cbd5e1;
+  margin: 0 4px;
+  font-weight: 300;
+}
+
+.context-slogan {
+  font-size: 0.875rem;
+  /* Reduced by 30% from 1.25rem per user request */
+  color: #64748b;
+  font-weight: 400;
+  font-style: italic;
+  /* Soft and human */
+  margin-bottom: 2px;
+  position: relative;
+  top: 4px;
+  /* Shift down 4px (was 2px, moved down 2px more) */
+}
+
+.context-credibility {
+  font-size: 1.25rem;
+  /* Reduced by 30% from 1.8rem */
+  color: #475569;
+  /* Stronger than slogan */
+  font-weight: 600;
+  /* Slightly stronger weight */
+}
+
+/* Hide on Mobile/Tablet (Show only on Large Desktop if space allows) */
+@media (max-width: 1200px) {
+  .header-context-block {
+    display: none !important;
+  }
+
+  .context-trust-icons {
+    display: none !important;
+  }
+}
+
+/* 
+   --------------------------------------------------
+   Header Vertical Divider (New)
+   --------------------------------------------------
+*/
+.header-divider {
+  width: 3px;
+  /* Increased by 1px (now 3px) */
+  height: 100px;
+  /* Increased to ~125% of visual area (was 50px, aimed for max height) */
+  background-color: #1e293b;
+  /* "Dark grey almost black" */
+  opacity: 0.8;
+  /* Increased opacity to ensure it looks dark */
+  margin: 0 16px;
+  /* 16px spacing */
+  flex-shrink: 0;
+  align-self: center;
+  /* Vertically centered */
+  display: block;
+  position: relative;
+  top: 10px;
+  /* Increased to 10px (was 9px, requested 1 more) */
+  left: 4px;
+  /* Increased to 4px (was 2px, requested 2 more) */
+}
+
+@media (max-width: 1200px) {
+  .header-divider {
+    display: none !important;
+  }
+}
+
 
 /* Cleanup old Top Bar styles if redundant, but keep just in case */
 .sleek-header__top-bar {
@@ -1868,8 +2033,8 @@ button[data-pack-quote],
   margin-bottom: 4px;
   position: relative;
   top: 0;
-  /* Adjusted down 3px from -3px */
-  /* Visual alignment */
+  left: -17px;
+  /* Shift left 17px total (-7px - 10px) */
 }
 
 .sleek-header__brand {
@@ -1928,6 +2093,13 @@ button[data-pack-quote],
   color: #0f172a;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  text-align: center;
+  /* Center the text as requested */
+  width: 100%;
+  /* Ensure it spans full width of container */
+  position: relative;
+  left: -2px;
+  /* Fine-tune alignment: shift left 2px */
 }
 
 .sleek-header__toggle {
@@ -3163,18 +3335,26 @@ span[class*="badge"] {
   font-weight: 700 !important;
   letter-spacing: 0.05em !important;
   text-transform: uppercase !important;
-  font-size: 125% !important;
-  /* Reduced to 125% to fix line break */
+  font-size: 150% !important;
+  /* Increased to 150% per user request (was 125%) */
   line-height: 1.2 !important;
   display: block !important;
-  margin-top: 30px !important;
-  /* Move down 30px */
+  margin-top: 40px !important;
+  /* Move down 40px (requested +10px total) */
 }
 
 /* User Request: Move right column up -> 30px total */
 .front-hero__media {
-  margin-top: -30px !important;
-  /* Increased by 5px per request */
+  margin-top: -40px !important;
+  /* Increased by 10px per request (total -40px) */
+}
+
+/* User Request: Move buttons up 8px */
+.front-hero__cta {
+  margin-top: -8px !important;
+  position: relative;
+  /* Ensure z-index works if needed */
+  z-index: 5;
 }
 
 /* Fix Fullscreen Video Alignment */
