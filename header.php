@@ -81,7 +81,6 @@
             'title' => __('Resources', 'florence-static'),
             'summary' => __('Portal, FAQs, contact', 'florence-static'),
             'links' => [
-                ['label' => __('Partner Portal', 'florence-static'), 'url' => home_url('/partner-portal/')],
                 ['label' => __('FAQs', 'florence-static'), 'url' => home_url('/faqs/')],
                 ['label' => __('About Florence', 'florence-static'), 'url' => home_url('/about/')],
                 ['label' => __('Contact & Quotes', 'florence-static'), 'url' => home_url('/request-quote/')],

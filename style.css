@@ -1694,8 +1694,8 @@ button[data-pack-quote],
   flex-direction: row;
   align-items: flex-end;
   /* Align bottom of logo with bottom of Nav */
-  gap: 40px;
-  /* Space between Logo and Content */
+  gap: 16px;
+  /* Reduced gap significantly to bring logo closer to nav pills */
 }
 
 /* Left Column: Logo */
@@ -1802,8 +1802,8 @@ button[data-pack-quote],
 
   /* Positioning: "Scoot left" - approx 2 inches visual closer, user said "bit further left" */
   margin: 0;
-  margin-left: 30px;
-  /* Reduced from 60px to move further left */
+  margin-left: 0px;
+  /* Remove left margin to pull nav group tight to logo */
   margin-right: auto;
   /* Pushes the next sibling (CTA) to the far right */
 }
@@ -1960,6 +1960,8 @@ button[data-pack-quote],
   gap: 32px;
   transform: translateY(5px);
   /* Move buttons down 5px as requested without moving text */
+  margin-left: -10px;
+  /* Slight fine tuning pull */
 }
 
 /* Mega Nav List */
@@ -5180,5 +5182,436 @@ input:checked+.slider:before {
   .btn-group .btn {
     width: 100%;
     text-align: center;
+  }
+}
+
+/* 
+   --------------------------------------------------
+   Manufacturing Partner Page Refactor
+   --------------------------------------------------
+*/
+.manufacturing-page .page-hero__copy h1 {
+  margin-bottom: 24px;
+  max-width: 900px;
+  line-height: 1.2;
+}
+
+.manufacturing-page .page-hero__copy .subhead {
+  max-width: 700px;
+  line-height: 1.6;
+  margin-bottom: 0;
+  font-size: 1.125rem;
+  color: #475569;
+}
+
+/* 
+   --------------------------------------------------
+   Near-Shore Calculator Page Refactor
+   --------------------------------------------------
+*/
+
+/* 1. Calculator Hero (Compact) */
+.calculator-hero {
+  background: #f8fafc;
+  padding: 60px 0 40px;
+  /* Reduced vertical height */
+  text-align: center;
+}
+
+.calculator-hero .headline-lg {
+  font-size: 2.5rem;
+  line-height: 1.1;
+  color: #0f172a;
+  margin-bottom: 16px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.calculator-hero .subhead {
+  font-size: 1.125rem;
+  color: #64748b;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.calculator-hero .eyebrow {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #2563eb;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 12px;
+}
+
+/* 2. Calculator Container */
+.nearshore-calculator,
+.sustainability-tracker {
+  padding: 40px 0 80px;
+  background: #fff;
+}
+
+/* 3. Inputs Row */
+.calculator-form {
+  background: #f1f5f9;
+  padding: 32px;
+  border-radius: 12px;
+  margin-bottom: 40px;
+}
+
+.calculator-inputs-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) auto;
+  /* 4 inputs + button */
+  gap: 24px;
+  align-items: end;
+  /* Align button with inputs */
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  /* Prevent ugly wrapping */
+}
+
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  height: 44px;
+  /* Consistent height */
+  background: #fff;
+}
+
+.input-group--btn .btn {
+  height: 44px;
+  padding: 0 32px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calculator-assumptions {
+  margin-top: 20px;
+  color: #64748b;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* 4. Results Grid */
+.calculator-results-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+
+.result-card {
+  background: #fff;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.result-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.result-label {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.result-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.result-delta {
+  font-size: 1.1rem;
+  color: #16a34a;
+  /* Green for goodness */
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.result-note {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+  .calculator-inputs-row {
+    grid-template-columns: 1fr 1fr;
+    /* 2 cols */
+  }
+
+  .input-group--btn {
+    grid-column: span 2;
+  }
+
+  .input-group--btn .btn {
+    width: 100%;
+  }
+
+  .calculator-results-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .calculator-inputs-row {
+    grid-template-columns: 1fr;
+    /* Stack */
+  }
+
+  .input-group--btn {
+    grid-column: span 1;
+  }
+
+  .calculator-results-grid {
+    grid-template-columns: 1fr;
+    /* Stack results */
+    gap: 24px;
+  }
+
+  .calculator-hero .headline-lg {
+    font-size: 1.75rem;
+  }
+}
+
+/* 
+   --------------------------------------------------
+   Sustainability Page Refactor
+   --------------------------------------------------
+*/
+/* Reusing .calculator-hero, .calculator-form, .calculator-results-grid from Nearshore Calculator */
+
+.sustainability-page .calculator-inputs-row {
+  grid-template-columns: 1fr 1fr;
+  /* 2 equal inputs */
+}
+
+.sus-comparison {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.sus-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sus-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.sus-value {
+  font-size: 1.25rem;
+  color: #334155;
+  font-weight: 700;
+}
+
+.result-card--sustainability .result-delta {
+  font-size: 1.5rem;
+  /* Make the delta pop */
+  color: #16a34a;
+}
+
+.sustainability-summary-box {
+  margin-top: 40px;
+  padding: 24px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  text-align: center;
+  color: #166534;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .sustainability-page .calculator-inputs-row {
+    grid-template-columns: 1fr;
+  }
+
+  .sus-comparison {
+    gap: 16px;
+  }
+
+  .sus-value {
+    font-size: 1.1rem;
+  }
+}
+
+/* 
+   --------------------------------------------------
+   About Page Readability Overrides (Hard Contrast)
+   --------------------------------------------------
+*/
+
+.about-page .headline-xl,
+.about-page h1,
+.about-page h2,
+.about-page h3 {
+  color: #ffffff !important;
+}
+
+.about-page p,
+.about-page li,
+.about-page .subhead,
+.about-page .page-hero .subhead {
+  color: #f1f5f9 !important;
+  /* Very Light Slate (High Contrast) */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  /* Strong shadow for legibility */
+  font-weight: 400;
+  opacity: 1 !important;
+  /* Force full opacity */
+}
+
+/* Ensure bullet points are visible */
+.about-page ul li,
+.about-page ol li {
+  list-style-color: #f1f5f9 !important;
+  /* Chrome experimental, fallback below */
+}
+
+.about-page ul li::marker {
+  color: #f1f5f9 !important;
+}
+
+/* Card Visibility on Dark Background - Almost Opaque */
+.about-page .product-compliance__card {
+  background: rgba(15, 23, 42, 0.95) !important;
+  /* almost fully opaque dark slate */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  /* distinct border */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  /* Lift it off */
+  backdrop-filter: none;
+  /* remove blur to ensure opacity works reliably */
+}
+
+.about-page .product-compliance__card h3 {
+  color: #ffffff !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  text-shadow: none;
+}
+
+.about-page .product-compliance__card li {
+  color: #e2e8f0 !important;
+  /* High contrast inside cards */
+}
+
+/* CTA Section Contrast */
+.about-page .cta-banner {
+  background: #0f172a !important;
+  /* Solid dark background */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+}
+
+.about-page .cta-banner .section-title {
+  color: #ffffff !important;
+}
+
+.about-page .cta-banner .section-lead {
+  color: #e2e8f0 !important;
+}
+
+/* 
+   --------------------------------------------------
+   About Page Hero: Logo Stack
+   --------------------------------------------------
+*/
+
+.page-hero__media--logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  /* Clean background */
+}
+
+.hero-logo-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  /* Space between logos */
+  padding: 20px;
+  width: 100%;
+}
+
+.logo-stack__primary {
+  width: auto;
+  max-width: 90%;
+  height: 144px;
+  /* Reduced by 40% from 240px */
+  object-fit: contain;
+}
+
+.logo-stack__partner {
+  width: auto;
+  max-width: 95%;
+  height: 240px;
+  /* Reduced by 40% from 400px */
+  object-fit: contain;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .page-hero__media--logos {
+    min-height: 350px;
+  }
+
+  .logo-stack__primary {
+    max-width: 80%;
+    height: 100px;
+    /* Reduced mobile size */
+  }
+
+  .logo-stack__partner {
+    max-width: 90%;
+    height: 140px;
+    /* Reduced mobile size */
+  }
+
+  .hero-logo-stack {
+    gap: 24px;
   }
 }
