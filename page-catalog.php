@@ -4,57 +4,128 @@
  */
 
 get_header();
-$categories = get_terms(
-    [
-        'taxonomy'   => 'fl_catalog_category',
-        'hide_empty' => false,
-        'orderby'    => 'name',
-    ]
-);
+
+// Fetch Data Using Helper
+$catalog_data = Florence_Catalog::get_catalog_data();
+
+// Extract unique values for Filters
+$all_sizes = [];
+$all_types = [];
+foreach ($catalog_data as $p) {
+    if (!empty($p['filters']['sizes']))
+        $all_sizes = array_merge($all_sizes, $p['filters']['sizes']);
+    if (!empty($p['type']))
+        $all_types[] = $p['type'];
+}
+$all_sizes = array_unique($all_sizes);
+sort($all_sizes);
+$all_types = array_unique($all_types);
+sort($all_types);
+
+// Serialize for JS
+$json_data = json_encode($catalog_data);
 ?>
-<main class="florence-page florence-catalog">
-    <section class="florence-hero compact">
-        <div class="container">
-            <p class="eyebrow">Catálogo / Catalog</p>
-            <h1>Florence Medical Catalog</h1>
-            <p class="lead">Traceable surgical textiles, nearshore logistics, and importer-of-record accountability engineered for hospital sourcing teams.</p>
-        </div>
-    </section>
 
-    <section class="florence-section">
+<script>
+    window.FL_CATALOG_DATA = <?php echo $json_data; ?>;
+</script>
+<script src="<?php echo get_stylesheet_directory_uri(); ?>/assets/js/catalog-app.js" defer></script>
+
+<main class="florence-page florence-catalog-hub">
+
+    <!-- Hero + Search -->
+    <section class="catalog-hero">
         <div class="container">
-            <h2><?php esc_html_e( 'Nuestros productos', 'florence' ); ?></h2>
-            <div class="catalog-grid">
-                <?php foreach ( $categories as $category ) :
-                    $intro = get_term_meta( $category->term_id, 'fl_catalog_intro', true );
-                    ?>
-                    <article class="catalog-card">
-                        <h3>
-                            <a href="<?php echo esc_url( get_term_link( $category ) ); ?>">
-                                <?php echo esc_html( $category->name ); ?>
-                            </a>
-                        </h3>
-                        <?php if ( $intro ) : ?>
-                            <p><?php echo wp_kses_post( $intro ); ?></p>
-                        <?php endif; ?>
-                        <a class="catalog-link" href="<?php echo esc_url( get_term_link( $category ) ); ?>">
-                            <?php esc_html_e( 'Ver categoría →', 'florence' ); ?>
-                        </a>
-                    </article>
-                <?php endforeach; ?>
+            <h1>Products</h1>
+            <p class="subtext">Search by product name, code, size, sterile status, or health sector code.</p>
+
+            <div class="catalog-search-wrapper">
+                <input type="text" id="fl-search-input"
+                    placeholder="Search products (e.g., 'Surgical gown', '310130', 'XL', 'sterile')" autocomplete="off">
+                <button id="fl-search-clear" class="search-clear" aria-label="Clear search">&times;</button>
             </div>
         </div>
     </section>
 
-    <section class="florence-section cta-block">
+    <!-- Controls -->
+    <section class="catalog-controls">
         <div class="container">
-            <h2><?php esc_html_e( 'Hablemos. Estamos listos para innovar contigo.', 'florence' ); ?></h2>
-            <p><?php esc_html_e( 'Comparte tu formulary, solicita muestras con documentación o agenda una sesión con el equipo de cumplimiento.', 'florence' ); ?></p>
-            <div class="cta-actions">
-                <a class="btn btn-primary" href="<?php echo esc_url( site_url( '/contact' ) ); ?>"><?php esc_html_e( 'Request a Quote', 'florence' ); ?></a>
-                <a class="btn" href="<?php echo esc_url( site_url( '/contact' ) ); ?>"><?php esc_html_e( 'Contactar ahora', 'florence' ); ?></a>
+            <div class="filters-bar">
+
+                <div class="filter-group">
+                    <label>Category</label>
+                    <div class="select-wrapper">
+                        <select id="filter-category">
+                            <option value="All">All Categories</option>
+                            <option value="Isolation & Surgical Gowns">Isolation & Surgical Gowns</option>
+                            <option value="Face Masks & Respiratory">Face Masks & Respiratory</option>
+                            <option value="Drapes & Procedure Packs">Drapes & Procedure Packs</option>
+                            <option value="Gloves & Accessories">Gloves & Accessories</option>
+                            <option value="Private Label Programs">Private Label Programs</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Tier</label>
+                    <div class="select-wrapper">
+                        <select id="filter-tier">
+                            <option value="All">All Tiers</option>
+                            <option value="Standard">Standard</option>
+                            <option value="Premium">Premium</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Sterile</label>
+                    <div class="select-wrapper">
+                        <select id="filter-sterile">
+                            <option value="All">Any</option>
+                            <option value="Sterile">Yes</option>
+                            <option value="Non-Sterile">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label>Size</label>
+                    <div class="select-wrapper">
+                        <select id="filter-size">
+                            <option value="All">All Sizes</option>
+                            <?php foreach ($all_sizes as $s): ?>
+                                <option value="<?php echo esc_attr($s); ?>"><?php echo esc_html($s); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="fl-reset-btn btn-link">Reset filters</button>
+            </div>
+
+            <div class="results-meta">
+                <span id="fl-results-count">Showing 0 results</span>
+
+                <div class="view-toggle-wrapper">
+                    <span>Card</span>
+                    <label class="switch">
+                        <input type="checkbox" id="fl-view-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <span>Table</span>
+                </div>
             </div>
         </div>
     </section>
+
+    <!-- Results -->
+    <section class="catalog-results" id="fl-catalog-root">
+        <div class="container" id="fl-results-container">
+            <!-- JS Renders here -->
+            <div class="catalog-loader">Loading catalog...</div>
+        </div>
+    </section>
+
 </main>
-<?php get_footer();
+
+<?php get_footer(); ?>

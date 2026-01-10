@@ -16,7 +16,7 @@ $florence_child_includes = [
   'seo-schema.php',
   'exporter.php',
   'sample-products.php',
-  'catalog.php',
+  'class-florence-catalog.php',
 ];
 
 foreach ($florence_child_includes as $file) {

@@ -40,11 +40,11 @@
             'title' => __('Products', 'florence-static'),
             'summary' => __('Gowns, masks, packs, PPE', 'florence-static'),
             'links' => [
-                ['label' => __('Isolation & Surgical Gowns', 'florence-static'), 'url' => home_url('/shop/?product_cat=gowns')],
-                ['label' => __('Face Masks & Respiratory', 'florence-static'), 'url' => home_url('/shop/?product_cat=masks')],
-                ['label' => __('Drapes & Procedure Packs', 'florence-static'), 'url' => home_url('/shop/?product_cat=drapes')],
-                ['label' => __('Gloves & Accessories', 'florence-static'), 'url' => home_url('/shop/?product_cat=accessories')],
-                ['label' => __('Private Label Programs', 'florence-static'), 'url' => home_url('/manufacturing-partner/#private-label')],
+                ['label' => __('Isolation & Surgical Gowns', 'florence-static'), 'url' => home_url('/catalog/?category=gowns')],
+                ['label' => __('Face Masks & Respiratory', 'florence-static'), 'url' => home_url('/catalog/?category=masks')],
+                ['label' => __('Drapes & Procedure Packs', 'florence-static'), 'url' => home_url('/catalog/?category=drapes')],
+                ['label' => __('Gloves & Accessories', 'florence-static'), 'url' => home_url('/catalog/?category=accessories')],
+                ['label' => __('Private Label Programs', 'florence-static'), 'url' => home_url('/catalog/?category=private-label')],
             ],
         ],
         [
