@@ -13,14 +13,14 @@ get_header();
     <section class="page-hero" id="quality">
         <div class="container page-hero__grid">
             <div class="page-hero__copy">
-                <h1 class="headline-xl">Jalisco-based manufacturing integrated with U.S. hospital supply chains for
-                    speed and reliability.</h1>
+                <h1 class="headline-xl"><span class="hero-highlight">Jalisco-based manufacturing</span> integrated with
+                    <span class="hero-highlight">U.S. hospital supply chains</span> for speed and reliability.</h1>
                 <p class="subhead">Intercambio Global Latinoamérica (IGL) manufactures in Jalisco, while Florence acts
                     as the U.S. importer and distributor. We replace ocean freight with rapid near-shore trucking,
                     managing all FDA compliance and weekly replenishment.</p>
             </div>
             <div class="page-hero__media" aria-hidden="true">
-                <div class="page-hero__image-wrap">
+                <div class="page-hero__image-wrap hero-depth-frame">
                     <img src="<?php echo esc_url(content_url('/uploads/2025/11/warehouse-distribution-centre-1.jpg')); ?>"
                         alt="Florence warehouse operations supporting cross-border logistics" />
                 </div>

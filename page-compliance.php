@@ -39,7 +39,7 @@ get_header();
     <section class="compliance-section" id="fda-importer">
         <div class="container">
             <div class="section-header">
-                <span class="section-badge">Priority Status</span>
+                <!-- Priority Status Removed -->
                 <h2 class="section-title">U.S. Regulatory Status</h2>
                 <p class="section-lead">Current registration and listing status for U.S. Import and Manufacturing
                     entities.</p>
@@ -49,45 +49,45 @@ get_header();
                 <article class="compliance-card status-card display-active">
                     <div class="card-header">
                         <h3>FDA Establishment Registration</h3>
-                        <span class="status-pill">Active</span>
+                        <!-- Status Pill Removed -->
                     </div>
                     <div class="card-body">
                         <p>Importer (U.S.) and manufacturer (Mexico) registration numbers with prefilled RL links.</p>
-                        <a href="#" class="btn-link">Verify Registration &rarr;</a>
+                        <a href="#" class="text-link">Verify Registration &rarr;</a>
                     </div>
                 </article>
 
                 <article class="compliance-card status-card display-active">
                     <div class="card-header">
                         <h3>FDA Device Listings</h3>
-                        <span class="status-pill">Listed</span>
+                        <!-- Status Pill Removed -->
                     </div>
                     <div class="card-body">
                         <p>List by product family with product codes (FXX, FYA, etc.) and listing IDs.</p>
-                        <a href="#" class="btn-link">View Listings &rarr;</a>
+                        <a href="#" class="text-link">View Listings &rarr;</a>
                     </div>
                 </article>
 
                 <article class="compliance-card status-card">
                     <div class="card-header">
                         <h3>510(k) Summaries</h3>
-                        <span class="status-pill mode-applicable">Applicable Devices Only</span>
+                        <!-- Status Pill Removed -->
                     </div>
                     <div class="card-body">
                         <p>Upload only if you have clearance; include K number or note "Not applicable" for Class I
                             exempt.</p>
-                        <a href="#" class="btn-link">Download 510(k) &rarr;</a>
+                        <a href="#" class="text-link">Download 510(k) &rarr;</a>
                     </div>
                 </article>
 
                 <article class="compliance-card status-card">
                     <div class="card-header">
                         <h3>Importer of Record</h3>
-                        <span class="status-pill">Verified</span>
+                        <!-- Status Pill Removed -->
                     </div>
                     <div class="card-body">
                         <p>PDF outlining importer role, U.S. Agent, EIN, and compliance contacts.</p>
-                        <a href="#" class="btn-link">Download Statement &rarr;</a>
+                        <a href="#" class="text-link">Download Statement &rarr;</a>
                     </div>
                 </article>
             </div>

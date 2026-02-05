@@ -40,31 +40,37 @@
             </div>
         </div>
 
-        <!-- Column 2: Get Started (Grouped Actions) -->
-        <div class="footer-col footer-nav">
-            <h4 class="footer-heading">Get Started</h4>
-            <ul class="footer-links footer-actions-list">
-                <li><a href="/request-samples/" class="action-link">Request Samples</a></li>
-                <li><a href="/quote/" class="action-link">Request a Quote</a></li>
-                <li><a href="/contact/" class="action-link">Schedule a Meeting</a></li>
-            </ul>
-        </div>
+        <!-- Column 2: Navigation Stack (Get Started, Company, Resources) -->
+        <div class="footer-col footer-nav-stack">
+            <!-- Get Started -->
+            <div class="footer-nav-group">
+                <h4 class="footer-heading">Get Started</h4>
+                <ul class="footer-links footer-actions-list">
+                    <li><a href="/request-samples/" class="action-link">Request Samples</a></li>
+                    <li><a href="/quote/" class="action-link">Request a Quote</a></li>
+                    <li><a href="/contact/" class="action-link">Schedule a Meeting</a></li>
+                </ul>
+            </div>
 
-        <!-- Column 3: Company & Resources -->
-        <div class="footer-col footer-nav">
-            <h4 class="footer-heading">Company</h4>
-            <ul class="footer-links">
-                <li><a href="/about/">About Us</a></li>
-                <li><a href="/careers/">Careers</a></li>
-                <li><a href="/contact/">Contact</a></li>
-            </ul>
+            <!-- Company -->
+            <div class="footer-nav-group">
+                <h4 class="footer-heading">Company</h4>
+                <ul class="footer-links">
+                    <li><a href="/about/">About Us</a></li>
+                    <li><a href="/careers/">Careers</a></li>
+                    <li><a href="/contact/">Contact</a></li>
+                </ul>
+            </div>
 
-            <h4 class="footer-heading" style="margin-top: 24px;">Resources</h4>
-            <ul class="footer-links">
-                <li><a href="/compliance/">Compliance</a></li>
-                <li><a href="/logistics/">Logistics</a></li>
-                <li><a href="/faqs/">FAQs</a></li>
-            </ul>
+            <!-- Resources -->
+            <div class="footer-nav-group">
+                <h4 class="footer-heading">Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="/compliance/">Compliance</a></li>
+                    <li><a href="/logistics/">Logistics</a></li>
+                    <li><a href="/faqs/">FAQs</a></li>
+                </ul>
+            </div>
         </div>
 
         <!-- Column 4: Operations Map (Restored) -->

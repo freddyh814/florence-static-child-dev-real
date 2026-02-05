@@ -32,50 +32,106 @@ get_header();
 
     <section class="page-section page-section--light">
         <div class="container product-compliance__grid">
-            <article class="product-compliance__card">
-                <h3>Who we are</h3>
-                <ul>
-                    <li>100% Mexican company with 20+ years supporting the healthcare sector</li>
-                    <li>Focused on high-technology textile development, manufacturing, and distribution</li>
-                    <li>Florence-branded sterile and reusable surgical garments produced under strict QA</li>
-                </ul>
+            <article class="product-compliance__card about-collapsible-card">
+                <button class="about-card-trigger" aria-expanded="false" aria-controls="card-who-we-are">
+                    <span class="about-card-title">Who we are</span>
+                    <span class="about-card-summary">100% Mexican company with 20+ years supporting the healthcare
+                        sector.</span>
+                    <span class="about-card-icon" aria-hidden="true">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </span>
+                </button>
+                <div id="card-who-we-are" class="about-card-content" hidden>
+                    <ul>
+                        <li>100% Mexican company with 20+ years supporting the healthcare sector</li>
+                        <li>Focused on high-technology textile development, manufacturing, and distribution</li>
+                        <li>Florence-branded sterile and reusable surgical garments produced under strict QA</li>
+                    </ul>
+                </div>
             </article>
-            <article class="product-compliance__card">
-                <h3>Mission & vision</h3>
-                <ul>
-                    <li>Deliver textile solutions that ensure safety, precision, and confidence in every procedure</li>
-                    <li>Lead innovation in healthcare textiles while expanding internationally</li>
-                    <li>Transform surgeries into safer, more efficient experiences for clinicians and patients</li>
-                </ul>
+            <article class="product-compliance__card about-collapsible-card">
+                <button class="about-card-trigger" aria-expanded="false" aria-controls="card-mission">
+                    <span class="about-card-title">Mission & vision</span>
+                    <span class="about-card-summary">Deliver textile solutions that ensure safety, precision, and
+                        confidence in every procedure.</span>
+                    <span class="about-card-icon" aria-hidden="true">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </span>
+                </button>
+                <div id="card-mission" class="about-card-content" hidden>
+                    <ul>
+                        <li>Deliver textile solutions that ensure safety, precision, and confidence in every procedure
+                        </li>
+                        <li>Lead innovation in healthcare textiles while expanding internationally</li>
+                        <li>Transform surgeries into safer, more efficient experiences for clinicians and patients</li>
+                    </ul>
+                </div>
             </article>
-            <article class="product-compliance__card">
-                <h3>Infrastructure & capacity</h3>
-                <ul>
-                    <li>Modern facility with integrated CEDIS, conditioning, and QA labs</li>
-                    <li>500+ specialists producing 25M+ apparel units annually across 350+ SKUs</li>
-                    <li>Strategically located 12 hours from the U.S. border for accelerated logistics</li>
-                </ul>
+            <article class="product-compliance__card about-collapsible-card">
+                <button class="about-card-trigger" aria-expanded="false" aria-controls="card-infra">
+                    <span class="about-card-title">Infrastructure & capacity</span>
+                    <span class="about-card-summary">Modern facility with integrated CEDIS, conditioning, and QA
+                        labs.</span>
+                    <span class="about-card-icon" aria-hidden="true">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </span>
+                </button>
+                <div id="card-infra" class="about-card-content" hidden>
+                    <ul>
+                        <li>Modern facility with integrated CEDIS, conditioning, and QA labs</li>
+                        <li>500+ specialists producing 25M+ apparel units annually across 350+ SKUs</li>
+                        <li>Strategically located 12 hours from the U.S. border for accelerated logistics</li>
+                    </ul>
+                </div>
             </article>
         </div>
     </section>
 
     <section class="page-section">
         <div class="container product-compliance__grid">
-            <article class="product-compliance__card">
-                <h3>Development & innovation</h3>
-                <ul>
-                    <li>Ideas move rapidly from concept to production with dedicated engineering teams</li>
-                    <li>Certified materials and internationally recognized processes ensure quality</li>
-                    <li>Custom projects supported end-to-end by Florence clinical and sourcing experts</li>
-                </ul>
+            <article class="product-compliance__card about-collapsible-card">
+                <button class="about-card-trigger" aria-expanded="false" aria-controls="card-dev">
+                    <span class="about-card-title">Development & innovation</span>
+                    <span class="about-card-summary">Ideas move rapidly from concept to production with dedicated
+                        engineering teams.</span>
+                    <span class="about-card-icon" aria-hidden="true">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </span>
+                </button>
+                <div id="card-dev" class="about-card-content" hidden>
+                    <ul>
+                        <li>Ideas move rapidly from concept to production with dedicated engineering teams</li>
+                        <li>Certified materials and internationally recognized processes ensure quality</li>
+                        <li>Custom projects supported end-to-end by Florence clinical and sourcing experts</li>
+                    </ul>
+                </div>
             </article>
-            <article class="product-compliance__card">
-                <h3>Regulatory credentials</h3>
-                <ul>
-                    <li>Importer-of-record documentation prepared and maintained by Florence</li>
-                    <li>ISO 13485, AAMI PB70, ASTM, and sterilization validations ready for committees</li>
-                    <li>Audit trails with timestamps, user IDs, and shipment references</li>
-                </ul>
+            <article class="product-compliance__card about-collapsible-card">
+                <button class="about-card-trigger" aria-expanded="false" aria-controls="card-reg">
+                    <span class="about-card-title">Regulatory credentials</span>
+                    <span class="about-card-summary">Importer-of-record documentation prepared and maintained by
+                        Florence.</span>
+                    <span class="about-card-icon" aria-hidden="true">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </span>
+                </button>
+                <div id="card-reg" class="about-card-content" hidden>
+                    <ul>
+                        <li>Importer-of-record documentation prepared and maintained by Florence</li>
+                        <li>ISO 13485, AAMI PB70, ASTM, and sterilization validations ready for committees</li>
+                        <li>Audit trails with timestamps, user IDs, and shipment references</li>
+                    </ul>
+                </div>
             </article>
         </div>
     </section>
@@ -114,5 +170,29 @@ get_header();
         </div>
     </section>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.about-collapsible-card');
+
+        cards.forEach(card => {
+            const trigger = card.querySelector('.about-card-trigger');
+            const content = card.querySelector('.about-card-content');
+
+            if (!trigger || !content) return;
+
+            trigger.addEventListener('click', () => {
+                const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+
+                // Toggle State
+                trigger.setAttribute('aria-expanded', !isExpanded);
+                content.hidden = isExpanded;
+
+                // Visual Toggle for Card Container (optional, for active state styling)
+                card.classList.toggle('is-expanded', !isExpanded);
+            });
+        });
+    });
+</script>
 
 <?php get_footer(); ?>

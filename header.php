@@ -70,12 +70,9 @@
         ],
         [
             'title' => __('Government', 'florence-static'),
+            'type' => 'direct', // Direct link, no dropdown
+            'url' => home_url('/government-gpo/'),
             'summary' => __('Federal & GPO readiness', 'florence-static'),
-            'links' => [
-                ['label' => __('Government & GPO Overview', 'florence-static'), 'url' => home_url('/government-gpo/')],
-                ['label' => __('SAM.gov & DLA', 'florence-static'), 'url' => home_url('/government-gpo/#sam')],
-                ['label' => __('Federal Supply & TAA', 'florence-static'), 'url' => home_url('/government-gpo/#taa')],
-            ],
         ],
         [
             'title' => __('Resources', 'florence-static'),
@@ -135,33 +132,54 @@
                             </a>
                         </div>
 
-                        <div class="language-toggle" data-language-switch>
-                            <button type="button" class="is-active" data-lang-button="en">EN</button>
-                            <button type="button" data-lang-button="es">ES</button>
-                        </div>
+
+
                     </div>
 
                     <nav class="mega-nav" id="mega-navigation" data-slim-nav>
                         <ul class="mega-nav__list">
                             <?php foreach ($nav_groups as $group): ?>
-                                <li class="mega-nav__item">
-                                    <button class="mega-nav__toggle" type="button" data-mega-toggle>
-                                        <span class="mega-nav__title"><?php echo esc_html($group['title']); ?></span>
-                                    </button>
-                                    <div class="mega-nav__panel" data-mega-panel>
-                                        <div class="mega-nav__panel-inner">
-                                            <ul>
-                                                <?php foreach ($group['links'] as $link): ?>
-                                                    <li><a
-                                                            href="<?php echo esc_url($link['url']); ?>"><?php echo esc_html($link['label']); ?></a>
-                                                    </li>
-                                                <?php endforeach; ?>
-                                            </ul>
+                                <?php if (isset($group['type']) && $group['type'] === 'direct'): ?>
+                                    <!-- Direct Link Item -->
+                                    <li class="mega-nav__item">
+                                        <a href="<?php echo esc_url($group['url']); ?>"
+                                            class="mega-nav__toggle mega-nav__link <?php echo (is_page('government-gpo') || is_page('government')) ? 'current-menu-item' : ''; ?>">
+                                            <?php echo esc_html($group['title']); ?>
+                                        </a>
+                                    </li>
+                                <?php else: ?>
+                                    <!-- Dropdown Item -->
+                                    <li class="mega-nav__item">
+                                        <button class="mega-nav__toggle" type="button" data-mega-toggle>
+                                            <span class="mega-nav__title"><?php echo esc_html($group['title']); ?></span>
+                                        </button>
+                                        <div class="mega-nav__panel" data-mega-panel>
+                                            <div class="mega-nav__panel-inner">
+                                                <ul>
+                                                    <?php foreach ($group['links'] as $link): ?>
+                                                        <li><a
+                                                                href="<?php echo esc_url($link['url']); ?>"><?php echo esc_html($link['label']); ?></a>
+                                                        </li>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                <?php endif; ?>
                             <?php endforeach; ?>
+
+                            <!-- Language Toggle (Restored) -->
+                            <li class="mega-nav__item lang-toggle-item">
+                                <div class="lang-toggle-container">
+                                    <span class="lang-option is-active">EN</span>
+                                    <span class="lang-separator">/</span>
+                                    <a href="#" class="lang-option">ES</a>
+                                </div>
+                            </li>
                         </ul>
+
+
+
                         <!-- Mobile CTA (Visible on Mobile only via CSS) -->
                         <div class="mega-nav__cta mobile-cta">
                             <a class="btn btn-primary"
@@ -222,8 +240,7 @@
                     <div class="context-credibility">Built for hospital supply chains</div>
                 </div>
 
-                <!-- Vertical Divider (New) -->
-                <div class="header-divider"></div>
+
 
                 <!-- Right Actions: Desktop CTA + Mobile Toggle -->
                 <div class="header-right-actions">

@@ -663,36 +663,34 @@ if ($cta_image_file && file_exists($cta_image_file)) {
                         <span class="step-icon">1</span>
                         <span class="step-label"><?php esc_html_e('Share needs', 'florence-static'); ?></span>
                     </div>
-                    <div class="step-separator">→</div>
                     <div class="step-item">
                         <span class="step-icon">2</span>
                         <span
                             class="step-label"><?php esc_html_e('We assemble samples/docs', 'florence-static'); ?></span>
                     </div>
-                    <div class="step-separator">→</div>
                     <div class="step-item">
                         <span class="step-icon">3</span>
                         <span class="step-label"><?php esc_html_e('Align delivery plan', 'florence-static'); ?></span>
                     </div>
-                </div>
 
-                <div class="btn-group">
-                    <a class="btn btn-primary" href="<?php echo esc_url(home_url('/request-samples/')); ?>">
-                        <svg class="btn-icon" width="18" height="18" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" style="margin-right: 8px;">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                        </svg>
-                        <?php esc_html_e('Request samples', 'florence-static'); ?>
-                    </a>
-                    <a class="btn btn-secondary" href="<?php echo esc_url(home_url('/contact/')); ?>">
-                        <svg class="btn-icon" width="18" height="18" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" style="margin-right: 8px;">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <?php esc_html_e('Schedule a time to meet', 'florence-static'); ?>
-                    </a>
+                    <div class="btn-group">
+                        <a class="btn btn-primary" href="<?php echo esc_url(home_url('/request-samples/')); ?>">
+                            <svg class="btn-icon" width="18" height="18" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" style="margin-right: 8px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            </svg>
+                            <?php esc_html_e('Request samples', 'florence-static'); ?>
+                        </a>
+                        <a class="btn btn-secondary" href="<?php echo esc_url(home_url('/contact/')); ?>">
+                            <svg class="btn-icon" width="18" height="18" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor" style="margin-right: 8px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <?php esc_html_e('Schedule a time to meet', 'florence-static'); ?>
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Trust Line -->
@@ -706,12 +704,7 @@ if ($cta_image_file && file_exists($cta_image_file)) {
                         alt="<?php echo esc_attr($cta_image_alt); ?>" loading="lazy" decoding="async" />
 
                     <!-- Map Overlay -->
-                    <div class="product-cta__map-overlay">
-                        <div class="map-legend">
-                            <span class="legend-dot"></span>
-                            <?php esc_html_e('3PL hubs • Direct-to-hospital lanes', 'florence-static'); ?>
-                        </div>
-                    </div>
+
                 </figure>
             <?php endif; ?>
         </div>
