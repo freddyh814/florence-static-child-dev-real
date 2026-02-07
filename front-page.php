@@ -99,39 +99,50 @@ $pack_components = [
     [
         'name' => __('Level 3 surgical gown set', 'florence-static'),
         'category' => __('Gowns', 'florence-static'),
-        'units' =>
-            12,
+        'units' => 12,
         'description' => __('Includes sterile gown, towel pair, and wrap.', 'florence-static'),
+        'sterile' => true,
+        'level' => 'Level 3',
     ],
     [
         'name' => __('Orthopedic drape bundle', 'florence-static'),
         'category' => __('Drapes', 'florence-static'),
         'units' => 8,
         'description' => __('Split leg drapes, fluid pouches, arm board covers.', 'florence-static'),
+        'sterile' => true,
+        'level' => 'Level 4',
     ],
     [
         'name' => __('Laparoscopic tubing + camera cover', 'florence-static'),
         'category' => __('Accessories', 'florence-static'),
         'units' => 16,
         'description' => __('Insufflation tubing and universal camera drape.', 'florence-static'),
+        'sterile' => true,
+        'level' => 'N/A',
     ],
     [
         'name' => __('OB / C-section neonatal kit', 'florence-static'),
         'category' => __('Packs', 'florence-static'),
         'units' => 10,
         'description' => __('Includes neonatal towels, bulb syringe, and uterine drape.', 'florence-static'),
+        'sterile' => true,
+        'level' => 'Level 3',
     ],
     [
         'name' => __('ENT disposable instrument set', 'florence-static'),
         'category' => __('Packs', 'florence-static'),
         'units' => 18,
         'description' => __('Speculum, suction, and minute drapes for ENT procedures.', 'florence-static'),
+        'sterile' => false,
+        'level' => 'N/A',
     ],
     [
         'name' => __('Bouffants + shoe covers combo', 'florence-static'),
         'category' => __('PPE', 'florence-static'),
         'units' => 40,
         'description' => __('Disposable apparel staged with every OR turn.', 'florence-static'),
+        'sterile' => false,
+        'level' => 'N/A',
     ],
 ];
 
@@ -489,22 +500,58 @@ if ($cta_image_file && file_exists($cta_image_file)) {
         data-empty-message="<?php esc_attr_e('Add components to start configuring your pack.', 'florence-static'); ?>">
         <div class="container">
             <div class="build-pack__header">
-                <p class="build-pack__eyebrow"><?php esc_html_e('Configurator', 'florence-static'); ?></p>
-                <h2 class="section-title"><?php esc_html_e('Build your own pack', 'florence-static'); ?></h2>
-                <p class="section-lead">
-                    <?php esc_html_e('Drag Florence components into your tray, see auto case counts, and export the summary before requesting a quote.', 'florence-static'); ?>
-                </p>
-                <!-- New Trust Line -->
-                <p class="build-pack__trust-line" style="color: #ffffff !important;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="trust-icon"
-                        style="stroke: #ffffff !important;" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    </svg>
-                    <span
-                        style="color: #ffffff !important;"><?php esc_html_e('Committee-ready documentation • Exportable PDF summary', 'florence-static'); ?></span>
-                </p>
+                <div class="build-pack__header-content">
+                    <p class="build-pack__eyebrow"><?php esc_html_e('Configurator', 'florence-static'); ?></p>
+                    <h2 class="section-title"><?php esc_html_e('Build your own pack', 'florence-static'); ?></h2>
+                    <p class="section-lead">
+                        <?php esc_html_e('Drag Florence components into your tray, see auto case counts, and export the summary before requesting a quote.', 'florence-static'); ?>
+                    </p>
+                    <!-- New Trust Line -->
+                    <p class="build-pack__trust-line" style="color: #ffffff !important;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="trust-icon"
+                            style="stroke: #ffffff !important;" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                        <span
+                            style="color: #ffffff !important;"><?php esc_html_e('Committee-ready documentation • Exportable PDF summary', 'florence-static'); ?></span>
+                    </p>
+                </div>
+                <div class="build-pack__rotator-wrapper">
+                    <div class="build-pack__rotator">
+                        <img src="<?php echo esc_url(content_url('/uploads/2025/08/category_1-min.jpg')); ?>"
+                            alt="Product 1" class="is-active" />
+                        <img src="<?php echo esc_url(content_url('/uploads/2025/08/category_2-min.jpg')); ?>"
+                            alt="Product 2" />
+                        <img src="<?php echo esc_url(content_url('/uploads/2025/08/category_3-min.jpg')); ?>"
+                            alt="Product 3" />
+                        <img src="<?php echo esc_url(content_url('/uploads/2025/08/category_4-min.jpg')); ?>"
+                            alt="Product 4" />
+                    </div>
+                    <a href="<?php echo esc_url(home_url('/shop/')); ?>" class="visit-shop-pill">
+                        <?php esc_html_e('View all products', 'florence-static'); ?>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const rotator = document.querySelector('.build-pack__rotator');
+                    if (!rotator) return;
+
+                    const images = rotator.querySelectorAll('img');
+                    let currentIndex = 0;
+
+                    setInterval(() => {
+                        images[currentIndex].classList.remove('is-active');
+                        currentIndex = (currentIndex + 1) % images.length;
+                        images[currentIndex].classList.add('is-active');
+                    }, 3000); // Change every 3 seconds
+                });
+            </script>
 
             <!-- App Canvas Wrapper -->
             <div class="build-pack__canvas">
@@ -523,7 +570,10 @@ if ($cta_image_file && file_exists($cta_image_file)) {
                             <?php foreach ($pack_components as $component): ?>
                                 <button type="button" class="build-pack__component"
                                     data-pack-component="<?php echo esc_attr($component['name']); ?>"
-                                    data-pack-units="<?php echo esc_attr($component['units']); ?>" draggable="true">
+                                    data-pack-units="<?php echo esc_attr($component['units']); ?>"
+                                    data-pack-category="<?php echo esc_attr($component['category']); ?>"
+                                    data-pack-sterile="<?php echo esc_attr($component['sterile'] ? 'true' : 'false'); ?>"
+                                    data-pack-level="<?php echo esc_attr($component['level']); ?>" draggable="true">
 
                                     <!-- Drag Handle -->
                                     <span class="build-pack__drag-handle" aria-hidden="true">
@@ -567,6 +617,18 @@ if ($cta_image_file && file_exists($cta_image_file)) {
                     <div class="build-pack__panel build-pack__panel--summary">
                         <!-- Sticky Status Bar -->
                         <div class="build-pack__status-bar">
+                            <div class="build-pack__status-header">
+                                <div class="build-pack__state" data-pack-state="idle">
+                                    <span class="state-dot"></span>
+                                    <span
+                                        class="state-text"><?php esc_html_e('Empty Pack', 'florence-static'); ?></span>
+                                </div>
+                                <div class="build-pack__preview" aria-hidden="true">
+                                    <span
+                                        class="preview-label"><?php esc_html_e('Preview:', 'florence-static'); ?></span>
+                                    <strong class="preview-name"></strong>
+                                </div>
+                            </div>
                             <div class="build-pack__status-group">
                                 <div class="build-pack__status-item">
                                     <span class="label"><?php esc_html_e('Total Items', 'florence-static'); ?></span>
